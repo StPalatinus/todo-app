@@ -1,18 +1,44 @@
 import React from 'react';
 import ReactDOM from 'react-dom'
 import Header from './header';
-import TodoList from './todo-list';
+import TaskList  from './task-list';
 import Footer from './footer';
 
-const todoApp = (
-  <section className="todoapp">
-    <Header />
-  <section className="main">
-    <TodoList />
-    <Footer />
-  </section>
-</section>
-);
+const TodoApp = () => {
 
-ReactDOM.render(todoApp,
+  const tasksData = [
+    {
+      description: 'Completed task',
+      created: 'created 17 seconds ago',
+      showField: false,
+    },
+    {
+      description: 'Editing task',
+      created: 'created 5 seconds ago',
+      showField: true,
+    },
+    {
+      description: 'Active task',
+      created: 'created 5 seconds ago',
+      showField: false,
+    },
+    {
+      description: 'Test task',
+      created: 'pending',
+      showField: false,
+    }
+  ];
+
+  return (
+    <section className="todoapp">
+        <Header />
+      <section className="main">
+        <TaskList tasksList ={tasksData} />
+        <Footer />
+      </section>
+    </section>
+  );
+};
+
+ReactDOM.render(<TodoApp />,
   document.getElementById('appbody'));
