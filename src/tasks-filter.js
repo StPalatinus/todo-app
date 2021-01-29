@@ -1,4 +1,5 @@
 import React from 'react';
+import './tasks-filter.css'
 
 const TasksFilter  = () => {
     return (

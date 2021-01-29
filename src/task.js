@@ -1,10 +1,12 @@
 import React from 'react';
+import NewTaskForm from './new-task-form';
+import './task.css';
 
 
-const Task = ({ description, created, showField = false }) => {
-    const style = {
-      display: showField ? 'block': 'none'
-    };
+const Task = ({ description, created, ... rest}) => {
+    // const style = {
+    //   display: showField ? 'block': 'none'
+    // };
 
     return (
       <div>
@@ -17,10 +19,10 @@ const Task = ({ description, created, showField = false }) => {
           <button className="icon icon-edit"></button>
           <button className="icon icon-destroy"></button>
         </div>
-        <input type="text" className="edit" value="Editing task" style={style} />
+        <NewTaskForm {... rest} />
+        {/* <input type="text" className="edit" value="Editing task" style={style} /> */}
       </div>  
     );
-  // }
 };
 export default Task;
 

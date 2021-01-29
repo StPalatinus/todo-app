@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom'
 import Header from './header';
 import TaskList  from './task-list';
 import Footer from './footer';
+import './index.css';
 
 const TodoApp = () => {
 
@@ -22,11 +23,11 @@ const TodoApp = () => {
       created: 'created 5 seconds ago',
       showField: false,
     },
-    {
-      description: 'Test task',
-      created: 'pending',
-      showField: false,
-    }
+    // {
+    //   description: 'Test task',
+    //   created: 'pending',
+    //   showField: false,
+    // }
   ];
 
   return (
