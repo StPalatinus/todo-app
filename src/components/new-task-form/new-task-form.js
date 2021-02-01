@@ -1,9 +1,10 @@
 import React from 'react';
-import './new-task-form.css'
+import './new-task-form.css';
 
-const NewTaskForm = ({ showField = false }) => {
+const NewTaskForm = ({fieldStatus}) => {
+    // console.log(showField);
     const style = {
-      display: showField ? 'block': 'none'
+      display: fieldStatus ? 'block': 'none',
     };
 
     return (

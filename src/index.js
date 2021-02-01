@@ -1,33 +1,33 @@
 import React from 'react';
 import ReactDOM from 'react-dom'
-import Header from './header';
-import TaskList  from './task-list';
-import Footer from './footer';
+import Header from './components/header';
+import TaskList  from './components/task-list';
+import Footer from './components/footer';
 import './index.css';
 
 const TodoApp = () => {
 
+  let date = new Date() - 1020000;
+  let date2 = new Date() - 300000;
+  let date3 = new Date() - 300000;
+  // (date - 500) - Date.now()
+
   const tasksData = [
     {
       description: 'Completed task',
-      created: 'created 17 seconds ago',
+      created: date,
       showField: false,
     },
     {
       description: 'Editing task',
-      created: 'created 5 seconds ago',
+      created: date2,
       showField: true,
     },
     {
       description: 'Active task',
-      created: 'created 5 seconds ago',
+      created: date3,
       showField: false,
     },
-    // {
-    //   description: 'Test task',
-    //   created: 'pending',
-    //   showField: false,
-    // }
   ];
 
   return (
