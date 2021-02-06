@@ -3,13 +3,21 @@ import Task from '../task'
 import './task-list.css';
 
 
-const TaskList = ({ tasksList }) => {
+const TaskList = ({ tasksList, onDelete, taskStateChange }) => {
+
+  let classList = ""; 
 
   const tasks = tasksList.map((taskProps) => {
+
+    taskProps.completed ? classList = "completed" : classList = "";
+    
     return (
-      <li className="completed">
-          {/* <Task description={taskProps.description} created={taskProps.created} /> */}
-          <Task {... taskProps} />
+      <li className={classList} key={taskProps.id}>
+          <Task 
+            {... taskProps} 
+            onDelete = { () => onDelete(taskProps.id) } 
+            // onTaskStateChange = { () => console.log(taskProps.id) } />
+            onTaskStateChange = { () => taskStateChange(taskProps.id) } />
       </li>
     );
   });

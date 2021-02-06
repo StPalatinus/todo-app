@@ -5,41 +5,106 @@ import TaskList  from './components/task-list';
 import Footer from './components/footer';
 import './index.css';
 
-const TodoApp = () => {
+class TodoApp extends React.Component {
+  constructor() {
+    super();
 
-  let date = new Date() - 1020000;
-  let date2 = new Date() - 300000;
-  let date3 = new Date() - 300000;
-  // (date - 500) - Date.now()
+   this.directId = 100;
 
-  const tasksData = [
-    {
-      description: 'Completed task',
-      created: date,
-      showField: false,
-    },
-    {
-      description: 'Editing task',
-      created: date2,
-      showField: true,
-    },
-    {
-      description: 'Active task',
-      created: date3,
-      showField: false,
-    },
-  ];
+    this.state = {
+      tasksData: [
+        {
+          description: 'Completed task',
+          created: new Date() - 1020000,
+          showField: false,
+          completed: true,
+          id: 1,
+        },
+        {
+          description: 'Editing task',
+          created: new Date() - 300000,
+          showField: true,
+          completed: false,
+          id: 2,
+        },
+        {
+          description: 'Active task',
+          created: new Date() - 300000,
+          showField: false,
+          completed: true,
+          id: 3,
+        },
+      ]
+    };
+  }
+  
+  deleteTask = (id) => {
+    this.setState((state) => {
 
-  return (
-    <section className="todoapp">
-        <Header />
-      <section className="main">
-        <TaskList tasksList ={tasksData} />
-        <Footer />
+      const idx = state.tasksData.findIndex((task) => task.id === id);
+      const newArr =[ ...state.tasksData.slice(0, idx), ...state.tasksData.slice(idx + 1) ];
+      
+      return {
+        tasksData: newArr
+      };
+    })
+  };
+
+  taskStateChange = (id) => {
+    console.log(id);
+    this.setState((state) => {
+
+      const idx = state.tasksData.findIndex((task) => task.id === id);
+      
+      let stateChangedTask = state.tasksData.slice(idx, idx + 1);
+ 
+      stateChangedTask[0].completed = !stateChangedTask[0].completed;
+
+      const newArr =[ ...state.tasksData.slice(0, idx), ...stateChangedTask, ...state.tasksData.slice(idx + 1) ];
+
+      return {
+        tasksData: newArr
+      };
+    })
+  };
+
+  addNewTask = (text) => {
+    
+    this.setState((state) => {
+
+      const newTaskObj = {
+        description: text,
+          created: new Date() - 1,
+          showField: false,
+          completed: false,
+          id: this.directId++,
+      }
+
+      const newArr =[ ...state.tasksData, newTaskObj];
+      
+      return {
+        tasksData: newArr
+      };
+    })
+  };
+
+  render() {
+  
+    return (
+      <section className="todoapp">
+          <Header 
+          onTaskAdd = {this.addNewTask}/>
+        <section className="main">
+          <TaskList 
+              tasksList ={ this.state.tasksData }
+              onDelete = { this.deleteTask } 
+              taskStateChange = {this.taskStateChange}/>
+          <Footer />
+        </section>
       </section>
-    </section>
-  );
-};
+    );
+  };
+}
 
 ReactDOM.render(<TodoApp />,
   document.getElementById('appbody'));

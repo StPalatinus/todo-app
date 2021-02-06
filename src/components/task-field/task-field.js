@@ -2,23 +2,60 @@ import React from 'react';
 import formatDistanceToNow from 'date-fns/formatDistanceToNow'
 import './task-field.css'
 
-const TaskField = ({ description, created, showField }) => {
-  const taskStyle = {
-    display: showField ? 'none': 'block'
-  };
+export default class TaskField extends React.Component {
+  constructor(props) {
+    super(props);
+    
+    this.onLabelClick = () => {
+      this.props.onTaskStateChange();
+    }
+  }
 
-  console.log(formatDistanceToNow(new Date(created), 'MM/dd/yyyy'));
+    render() {
 
-  return (
+    const { description, created, showField } = this.props;
+
+    const taskStyle = {
+      display: showField ? 'none': 'block'
+    };
+
+    return (
       <div className="view" style={taskStyle}>
-      <input className="toggle" type="checkbox"/>
-      <label>
-        <span className="description">{description}</span>
-        <span className="created">{formatDistanceToNow(new Date(created), 'MM/dd/yyyy')}</span>
-      </label>
-      <button className="icon icon-edit"></button>
-      <button className="icon icon-destroy"></button>
-    </div>
-  );
-};
-export default TaskField;
+        <input className="toggle" type="checkbox"/>
+        <label onClick = { this.onLabelClick }>
+          <span className="description">{ description }</span>
+          <span className="created">{ formatDistanceToNow(new Date(created), 'MM/dd/yyyy') + ' ago' }</span>
+        </label>
+        <button className="icon icon-edit"></button>
+        <button className="icon icon-destroy" onClick = {this.props.onDelete}></button>
+      </div>
+    );
+  }
+}
+
+
+// const TaskField = ({ description, created, showField }) => {
+
+//   const taskStyle = {
+//     display: showField ? 'none': 'block'
+//   };
+
+//   // onLabelClick() {
+//   //   console.log('CLICKED');
+//   // }
+
+//   // console.log(formatDistanceToNow(new Date(created), 'MM/dd/yyyy'));
+
+//   return (
+//     <div className="view" style={taskStyle}>
+//       <input className="toggle" type="checkbox"/>
+//       <label onClick = { console.log('CLICKED') }>
+//         <span className="description">{ description }</span>
+//         <span className="created">{ formatDistanceToNow(new Date(created), 'MM/dd/yyyy') + ' ago' }</span>
+//       </label>
+//       <button className="icon icon-edit"></button>
+//       <button className="icon icon-destroy"></button>
+//     </div>
+//   );
+// };
+// export default TaskField;
