@@ -32,30 +32,3 @@ export default class TaskField extends React.Component {
     );
   }
 }
-
-
-// const TaskField = ({ description, created, showField }) => {
-
-//   const taskStyle = {
-//     display: showField ? 'none': 'block'
-//   };
-
-//   // onLabelClick() {
-//   //   console.log('CLICKED');
-//   // }
-
-//   // console.log(formatDistanceToNow(new Date(created), 'MM/dd/yyyy'));
-
-//   return (
-//     <div className="view" style={taskStyle}>
-//       <input className="toggle" type="checkbox"/>
-//       <label onClick = { console.log('CLICKED') }>
-//         <span className="description">{ description }</span>
-//         <span className="created">{ formatDistanceToNow(new Date(created), 'MM/dd/yyyy') + ' ago' }</span>
-//       </label>
-//       <button className="icon icon-edit"></button>
-//       <button className="icon icon-destroy"></button>
-//     </div>
-//   );
-// };
-// export default TaskField;

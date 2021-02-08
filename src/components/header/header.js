@@ -10,74 +10,32 @@ export default class Header extends React.Component {
         }
         
         this.onButtonEnter = (e) => {
-
-            if (e.charCode === 13 &&   e.target.value === "") {
-                return;
-            }
-            if (e.charCode === 13){
-                this.props.onTaskAdd(this.state.newTaskValue);
-                e.target.value = "";
-            } else {
-                this.setState({
-                    newTaskValue: e.target.value,
-                })
-                // this.setState = (e) => {
-                //     this.props.onTaskAdd(e.target.value);
-                // }
-            }
+            console.log(e.target.value);
+            this.setState({
+                newTaskValue: e.target.value,
+            });
         }
+
+        this.onSubmit = (e) => {
+            e.preventDefault();
+            this.props.onTaskAdd(this.state.newTaskValue);
+        };
       }
 
       render() {
         return (
-            <header className="header">
+            <header className="header"
+                    onSubmit = {this.onSubmit}>
                 <h1>todos</h1>
+                <form className="todo-form" >
                 <input className="new-todo" 
                         placeholder = "What needs to be done?" 
-                        onKeyPress = {this.onButtonEnter}
+                        onChange = {this.onButtonEnter}
                         autoFocus 
-                        // value = {this.state.newTaskValue} 
+                        value = {this.state.newTaskValue} 
                         />
+                </form>
             </header>
         );
     }
 }
-
-
-/*
-    export default class Header extends React.Component {
-    constructor(props) {
-        super(props);
-
-        let text = "";
-        
-        this.onButtonEnter = (e) => {
-            console.log(this.state);
-            if (e.charCode === 13 &&  text === "" &&  e.target.value === "") {
-                return;
-            }
-            if (e.charCode === 13){
-                this.props.onTaskAdd(text);
-                text = "";
-                e.target.value = "";
-            } else {
-                // text = e.target.value;
-                text += e.key;
-            }
-        }
-      }
-
-      render() {
-        return (
-            <header className="header">
-                <h1>todos</h1>
-                <input className="new-todo" 
-                        placeholder = "What needs to be done?" 
-                        onKeyPress = {this.onButtonEnter}
-                        autoFocus 
-                        value = {this.state.newTasValue} />
-            </header>
-        );
-    }
-}
-*/

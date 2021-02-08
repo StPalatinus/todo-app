@@ -37,6 +37,14 @@ class TodoApp extends React.Component {
       ]
     };
   }
+
+  countUnfinished = () => {
+    let unfinishedTasksCount = this.state.tasksData.filter((task) => {
+      // console.log(task.completed === true);
+      return task.completed === false;
+    }); 
+    return unfinishedTasksCount.length;
+  }
   
   deleteTask = (id) => {
     this.setState((state) => {
@@ -51,7 +59,7 @@ class TodoApp extends React.Component {
   };
 
   taskStateChange = (id) => {
-    console.log(id);
+    // console.log(id);
     this.setState((state) => {
 
       const idx = state.tasksData.findIndex((task) => task.id === id);
@@ -96,7 +104,7 @@ class TodoApp extends React.Component {
               tasksList ={ this.state.tasksData }
               onDelete = { this.deleteTask } 
               taskStateChange = {this.taskStateChange}/>
-          <Footer />
+          <Footer countUnfinished = {this.countUnfinished}/>
         </section>
       </section>
     );
