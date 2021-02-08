@@ -15,12 +15,15 @@ export default class Header extends React.Component {
                 return;
             }
             if (e.charCode === 13){
-                this.props.onTaskAdd(e.target.value);
+                this.props.onTaskAdd(this.state.newTaskValue);
                 e.target.value = "";
             } else {
-                this.setState = (e) => {
-                    this.props.onTaskAdd(e.target.value);
-                }
+                this.setState({
+                    newTaskValue: e.target.value,
+                })
+                // this.setState = (e) => {
+                //     this.props.onTaskAdd(e.target.value);
+                // }
             }
         }
       }
