@@ -10,8 +10,9 @@ export default class Header extends React.Component {
         this.onButtonEnter = (e) => {
             if (e.charCode === 13){
                 this.props.onTaskAdd(text);
+            } else {
+                text += e.key;
             }
-            text += e.key;
         }
       }
 
