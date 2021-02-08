@@ -8,9 +8,16 @@ export default class Header extends React.Component {
         let text = "";
         
         this.onButtonEnter = (e) => {
+            console.log(this.state);
+            if (e.charCode === 13 &&  text === "" &&  e.target.value === "") {
+                return;
+            }
             if (e.charCode === 13){
                 this.props.onTaskAdd(text);
+                text = "";
+                e.target.value = "";
             } else {
+                // text = e.target.value;
                 text += e.key;
             }
         }
@@ -28,19 +35,3 @@ export default class Header extends React.Component {
         );
     }
 }
-
-// const HeaderIld = () => {
-    
-
-//     return (
-//         <header className="header">
-//             <h1>todos</h1>
-//             <input className="new-todo" 
-//                     placeholder = "What needs to be done?" 
-//                     onKeyPress = {this.onKeyPress}
-//                     autoFocus/>
-//         </header>
-//     );
-// }; 
-
-// export default Header;
