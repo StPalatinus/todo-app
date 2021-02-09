@@ -4,13 +4,17 @@ import './footer.css'
 
 const Footer = ({countUnfinished}) => {
 
+  const onFilterCnahge = (showOnly) => {
+    console.log(showOnly);
+  }
+
   const unfinishedTCount = countUnfinished();
   
     return (
       <footer className="footer">
       <span className="todo-count">{unfinishedTCount} items left</span>
       <span className="filters-wrapper">
-        <TasksFilter/>
+        <TasksFilter onFilterCnahge = { onFilterCnahge } />
       </span>
       <button className="clear-completed">Clear completed</button>
     </footer>

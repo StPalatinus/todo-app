@@ -19,6 +19,9 @@ export default class Header extends React.Component {
         this.onSubmit = (e) => {
             e.preventDefault();
             this.props.onTaskAdd(this.state.newTaskValue);
+            this.setState({
+                newTaskValue: "",
+            });
         };
       }
 

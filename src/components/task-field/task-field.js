@@ -27,7 +27,8 @@ export default class TaskField extends React.Component {
           <span className="created">{ formatDistanceToNow(new Date(created), 'MM/dd/yyyy') + ' ago' }</span>
         </label>
         <button className="icon icon-edit"></button>
-        <button className="icon icon-destroy" onClick = {this.props.onDelete}></button>
+        <button className="icon icon-destroy" 
+                onClick = {this.props.onDelete}></button>
       </div>
     );
   }

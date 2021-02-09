@@ -7,6 +7,7 @@ import './index.css';
 
 class TodoApp extends React.Component {
   constructor() {
+    
     super();
 
    this.directId = 100;
