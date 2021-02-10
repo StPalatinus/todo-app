@@ -7,8 +7,7 @@ import './index.css';
 
 class TodoApp extends React.Component {
   constructor() {
-
-    super();
+  super();
 
    this.directId = 100;
 
@@ -17,22 +16,22 @@ class TodoApp extends React.Component {
         {
           description: 'Completed task',
           created: new Date() - 1020000,
-          showField: false,
+          editStatus: false,
           completed: true,
           id: 1,
         },
         {
-          description: 'Editing task',
+          description: 'Test task',
           created: new Date() - 300000,
-          showField: true,
+          editStatus: true,
           completed: false,
           id: 2,
         },
         {
           description: 'Active task',
           created: new Date() - 300000,
-          showField: false,
-          completed: true,
+          editStatus: false,
+          completed: false,
           id: 3,
         },
       ],
@@ -42,7 +41,6 @@ class TodoApp extends React.Component {
 
   countUnfinished = () => {
     let unfinishedTasksCount = this.state.tasksData.filter((task) => {
-      // console.log(task.completed === true);
       return task.completed === false;
     }); 
     return unfinishedTasksCount.length;
@@ -54,6 +52,21 @@ class TodoApp extends React.Component {
       const idx = state.tasksData.findIndex((task) => task.id === id);
       const newArr =[ ...state.tasksData.slice(0, idx), ...state.tasksData.slice(idx + 1) ];
       
+      return {
+        tasksData: newArr
+      };
+    })
+  };
+
+  editTask = (id) => {
+    this.setState((state) => {
+
+      const idx = this.state.tasksData.findIndex((task) => task.id === id);
+      const oldStateChangedTask = state.tasksData.slice(idx, idx + 1);
+      let newStateChangedTask = [{...oldStateChangedTask[0], completed: !oldStateChangedTask[0].completed }]      
+      newStateChangedTask = [{...oldStateChangedTask[0], editStatus: !oldStateChangedTask[0].editStatus}]
+      const newArr =[ ...state.tasksData.slice(0, idx), ...newStateChangedTask, ...state.tasksData.slice(idx + 1) ];
+
       return {
         tasksData: newArr
       };
@@ -82,7 +95,7 @@ class TodoApp extends React.Component {
       const newTaskObj = {
         description: text,
           created: new Date() - 1,
-          showField: false,
+          editStatus: false,
           completed: false,
           id: this.directId++,
       }
@@ -95,12 +108,42 @@ class TodoApp extends React.Component {
     })
   };
 
-  getFilterState = (showOnly) => {
+  changeFilterState = (showOnly) => {
 
     this.setState({
         filterState: showOnly
       })
   };
+
+  changeTask = (taskText, id) => {
+
+    this.setState((state) => {
+
+      const idx = this.state.tasksData.findIndex((task) => task.id === id);
+      const oldStateChangedTask = state.tasksData.slice(idx, idx + 1);
+      let newStateChangedTask = [{...oldStateChangedTask[0], completed: !oldStateChangedTask[0].completed }]      
+      newStateChangedTask = [{...oldStateChangedTask[0], description: taskText, editStatus: !oldStateChangedTask[0].editStatus}]
+      const newArr =[ ...state.tasksData.slice(0, idx), ...newStateChangedTask, ...state.tasksData.slice(idx + 1) ];
+
+      return {
+        tasksData: newArr
+      };
+    })
+  }
+
+  clearCompleted = () => {
+    this.setState((state) => {
+      let newState = []
+      state.tasksData.forEach((task) => {
+         if (!task.completed) {
+            newState.push(task);
+          } ;
+      });
+      return {
+        tasksData: newState
+      }
+    })
+  }
 
   render() {
   
@@ -113,9 +156,12 @@ class TodoApp extends React.Component {
               tasksList ={ this.state.tasksData }
               filterState = {this.state.filterState}
               onDelete = { this.deleteTask } 
-              taskStateChange = {this.taskStateChange}/>
+              onEdit = { this.editTask } 
+              taskStateChange = {this.taskStateChange} 
+              onTaskChange = {this.changeTask} />
           <Footer countUnfinished = {this.countUnfinished}
-                  getFilterState = {this.getFilterState}/>
+                  changeFilterState = {this.changeFilterState}
+                  clearCompleted = {this.clearCompleted} />
         </section>
       </section>
     );

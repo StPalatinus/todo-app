@@ -1,14 +1,39 @@
 import React from 'react';
 import './new-task-form.css';
 
-const NewTaskForm = ({fieldStatus}) => {
-    
-    const style = {
-      display: fieldStatus ? 'block': 'none',
-    };
+export default class NewTaskForm extends React.Component {
+  
+  constructor({ description, onTaskChange, id, formStyle }) {
+    super({ description, onTaskChange, id, formStyle });
 
-    return (
-        <input type="text" className="edit" value="Editing task" style={style} />
+    this.state = {
+      newTaskValue: description,
+    }
+
+    this.onButtonEnter = (e) => {
+
+      this.setState({
+        newTaskValue: e.target.value,
+      })
+
+      this.onTaskChange = (e) => {
+        e.preventDefault();
+        onTaskChange(this.state.newTaskValue, id);
+      }
+    }
+  }
+  
+
+  render() {
+  
+  return (
+    <form onSubmit = { this.onTaskChange }>
+    <input type="text" 
+          className="edit" 
+          value = {this.state.newTaskValue}
+          style = {this.props.formStyle}
+          onChange = { this.onButtonEnter } />
+    </form>
     );
-};
-export default NewTaskForm;
+  }
+}

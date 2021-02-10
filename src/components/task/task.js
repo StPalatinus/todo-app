@@ -5,14 +5,25 @@ import TaskField from '../task-field'
 
 
 const Task = (taskProps) => {
-  
-    let {showField} = {...taskProps};
-    // console.log(filterState);
+    const {description, editStatus, onTaskChange, id} = {...taskProps};
 
+    const formStyle = {
+      display: editStatus ? 'block': 'none',
+    };
+
+    const taskStyle = {
+      display: editStatus ? 'none': 'block'
+    };
+    
     return (
       <div>
-        <TaskField  {...taskProps}/>
-        <NewTaskForm fieldStatus = {showField} />
+        <TaskField  { ...taskProps } 
+                    taskStyle ={ taskStyle } />
+        <NewTaskForm editStatus = { editStatus } 
+                    description = { description }  
+                    onTaskChange = { onTaskChange }
+                    id = { id } 
+                    formStyle = {formStyle}/>
         {/* <input type="text" className="edit" value="Editing task" style={style} /> */}
       </div>  
     );

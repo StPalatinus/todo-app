@@ -3,7 +3,7 @@ import Task from '../task'
 import './task-list.css';
 
 
-const TaskList = ({ tasksList, onDelete, taskStateChange, filterState }) => {
+const TaskList = ({ tasksList, onDelete, onEdit, taskStateChange, filterState, onTaskChange }) => {
 
   let classList = ""; 
 
@@ -11,10 +11,10 @@ const TaskList = ({ tasksList, onDelete, taskStateChange, filterState }) => {
 
     taskProps.completed ? classList = "completed" : classList = "";
     if (filterState === "Active" && taskProps.completed) {
-      return;
+      return false;
     }
     if (filterState === "Completed" && !taskProps.completed) {
-      return;
+      return false;
     }
     
     return (
@@ -22,11 +22,13 @@ const TaskList = ({ tasksList, onDelete, taskStateChange, filterState }) => {
           <Task 
             {... taskProps} 
             onDelete = { () => onDelete(taskProps.id) } 
-            // onTaskStateChange = { () => console.log(taskProps.id) } />
-            onTaskStateChange = { () => taskStateChange(taskProps.id) } />
+            onEdit = { () => onEdit(taskProps.id) }
+            onTaskStateChange = { () => taskStateChange(taskProps.id) } 
+            onTaskChange = { onTaskChange } />
       </li>
     );
   });
+
     return (
       <ul className="todo-list">
         { tasks }

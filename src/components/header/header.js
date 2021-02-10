@@ -10,7 +10,7 @@ export default class Header extends React.Component {
         }
         
         this.onButtonEnter = (e) => {
-            console.log(e.target.value);
+            
             this.setState({
                 newTaskValue: e.target.value,
             });
