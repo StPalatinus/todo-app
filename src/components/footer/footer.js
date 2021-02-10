@@ -2,10 +2,10 @@ import React from 'react';
 import TasksFilter from '../tasks-filter';
 import './footer.css'
 
-const Footer = ({countUnfinished}) => {
+const Footer = ({countUnfinished, getFilterState}) => {
 
   const onFilterCnahge = (showOnly) => {
-    console.log(showOnly);
+    getFilterState(showOnly);
   }
 
   const unfinishedTCount = countUnfinished();

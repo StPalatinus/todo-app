@@ -7,6 +7,7 @@ import TaskField from '../task-field'
 const Task = (taskProps) => {
   
     let {showField} = {...taskProps};
+    // console.log(filterState);
 
     return (
       <div>

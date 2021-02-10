@@ -28,7 +28,12 @@ export default  class TasksFilter extends React.Component {
           }, () => {
             onFilterCnahge(this.state.show);
           })
-          // return;
+          // this.setState(() => {
+          //   return {
+          //     show: e.target.textContent,
+          //   }
+          // })
+          // onFilterCnahge(this.state.show);
         }
       } else {
         if (button.firstChild.classList.contains("selected")) {
@@ -36,7 +41,7 @@ export default  class TasksFilter extends React.Component {
         }
       }
     });
-  }
+  };
 
   render() {
     return (

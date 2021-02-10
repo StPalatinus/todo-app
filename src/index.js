@@ -7,7 +7,7 @@ import './index.css';
 
 class TodoApp extends React.Component {
   constructor() {
-    
+
     super();
 
    this.directId = 100;
@@ -35,7 +35,8 @@ class TodoApp extends React.Component {
           completed: true,
           id: 3,
         },
-      ]
+      ],
+      filterState: "All",
     };
   }
 
@@ -60,7 +61,7 @@ class TodoApp extends React.Component {
   };
 
   taskStateChange = (id) => {
-    // console.log(id);
+    
     this.setState((state) => {
 
       const idx = state.tasksData.findIndex((task) => task.id === id);
@@ -94,6 +95,13 @@ class TodoApp extends React.Component {
     })
   };
 
+  getFilterState = (showOnly) => {
+
+    this.setState({
+        filterState: showOnly
+      })
+  };
+
   render() {
   
     return (
@@ -103,9 +111,11 @@ class TodoApp extends React.Component {
         <section className="main">
           <TaskList 
               tasksList ={ this.state.tasksData }
+              filterState = {this.state.filterState}
               onDelete = { this.deleteTask } 
               taskStateChange = {this.taskStateChange}/>
-          <Footer countUnfinished = {this.countUnfinished}/>
+          <Footer countUnfinished = {this.countUnfinished}
+                  getFilterState = {this.getFilterState}/>
         </section>
       </section>
     );
