@@ -23,7 +23,7 @@ class TodoApp extends React.Component {
         {
           description: 'Test task',
           created: new Date() - 300000,
-          editStatus: true,
+          editStatus: false,
           completed: false,
           id: 2,
         },
