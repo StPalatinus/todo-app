@@ -4,6 +4,10 @@ import './footer.css'
 
 const Footer = ({countUnfinished, changeFilterState, clearCompleted}) => {
 
+  Footer.defaultProps = {
+    countUnfinished: () => {},
+  };
+
   const onFilterCnahge = (showOnly) => {
     changeFilterState(showOnly);
   }

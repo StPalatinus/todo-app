@@ -150,7 +150,8 @@ class TodoApp extends React.Component {
     return (
       <section className="todoapp">
           <Header 
-          onTaskAdd = {this.addNewTask}/>
+          onTaskAdd = {this.addNewTask} 
+          />
         <section className="main">
           <TaskList 
               tasksList ={ this.state.tasksData }

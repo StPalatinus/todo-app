@@ -4,13 +4,32 @@ import './task.css';
 import TaskField from '../task-field'
 
 export default class Task extends React.Component {
-  // constructor(props) {
-  //   super(props);
+  constructor(props) {
+    super(props);
 
-  // }
+    Task.defaultProps = {
+      description: "Default task",
+      editStatus: false,
+      completed: false,
+      id: 777,
+      created: new Date() - 1,
+      onDelete: () => {},
+      onEdit: () => {},
+      onTaskChange: {},
+      onTaskStateChange: () => {},
+    }
+  }
+  
+
+  focusTaskInput = (_) => {
+    if (this.taskInput) this.taskInput.focus();
+  }
   
   render() {
-    const {description, editStatus, onTaskChange, id} = {...this.props};
+
+    const {description, editStatus, onTaskChange, id} = this.props;
+
+    let newTaskForm 
 
     const formStyle = {
       display: editStatus ? 'block': 'none',
@@ -19,17 +38,23 @@ export default class Task extends React.Component {
     const taskStyle = {
       display: editStatus ? 'none': 'block'
     };
+
+    if (editStatus) {
+      newTaskForm = <NewTaskForm editStatus = { editStatus } 
+                    description = { description }  
+                    onTaskChange = { onTaskChange }
+                    id = { id }
+                    formStyle = {formStyle} />
+    } else {
+      newTaskForm = null;
+    }
     
     return (
       <div>
         <TaskField  { ...this.props } 
-                    taskStyle ={ taskStyle } />
-        <NewTaskForm editStatus = { editStatus } 
-                    description = { description }  
-                    onTaskChange = { onTaskChange }
-                    id = { id } 
-                    formStyle = {formStyle} />
-        {/* <input type="text" className="edit" value="Editing task" style={style} /> */}
+                    taskStyle ={ taskStyle }
+                    id = { id }  />
+                    {newTaskForm}
       </div>  
     );
   }

@@ -7,7 +7,13 @@ export default class NewTaskForm extends React.Component {
     super(props);
     this.taskInput = React.createRef();
 
-    const { description, onTaskChange, id, formStyle } = {...this.props};
+    const { description, onTaskChange, id, formStyle } = this.props;
+    
+    // NewTaskForm.defaultProps = {
+    //   formStyle: {
+    //     display: "none",
+    //   }
+    // };
     
     this.state = {
       newTaskValue: description,
@@ -16,7 +22,6 @@ export default class NewTaskForm extends React.Component {
 
     this.onButtonEnter = (e) => {
       
-      e.preventDefault();
       this.setState({
         newTaskValue: e.target.value,
       })
@@ -33,25 +38,16 @@ export default class NewTaskForm extends React.Component {
     this.taskInput.current.focus();
   }
 
-  // focusTaskInput() {
-  //   this.taskInput.current.focus();
-  // }
-
-  // componentDidMount() {
-  //   this.focusTaskInput();
-  // }
-
   render() {
-  
-  return (
+
+    return (
     <form onSubmit = { this.changeTask }>
     <input type="text" 
           className="edit" 
           ref = {this.taskInput}
           value = {this.state.newTaskValue}
           style = {this.props.formStyle}
-          onChange = { this.onButtonEnter }
-          autoFocus />
+          onChange = { this.onButtonEnter } />
     </form>
     );
   }

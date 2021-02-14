@@ -28,12 +28,6 @@ export default  class TasksFilter extends React.Component {
           }, () => {
             onFilterCnahge(this.state.show);
           })
-          // this.setState(() => {
-          //   return {
-          //     show: e.target.textContent,
-          //   }
-          // })
-          // onFilterCnahge(this.state.show);
         }
       } else {
         if (button.firstChild.classList.contains("selected")) {
@@ -44,6 +38,7 @@ export default  class TasksFilter extends React.Component {
   };
 
   render() {
+    
     return (
       <ul className="filters" onClick={this.onViewCnahge}>
           <li>

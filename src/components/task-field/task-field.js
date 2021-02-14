@@ -5,15 +5,37 @@ import './task-field.css'
 export default class TaskField extends React.Component {
   constructor(props) {
     super(props);
+
+    TaskField.defaultProps = {
+      description: "Default task",
+      editStatus: false,
+      completed: false,
+      id: 777,
+      onDelete: () => {},
+      onEdit: () => {},
+      onTaskChange: {},
+      onTaskStateChange: () => {},
+      taskStyle: {display: "block"},
+    }
+
+    TaskField.defaultProps = {
+      taskStyle: {
+        display: "block"
+      }
+    };
     
     this.onLabelClick = () => {
       this.props.onTaskStateChange();
     }
+
+    this.onTaskFieldFocus = () => {
+      this.props.onEdit();
+    }
   }
 
-    render() {
-
-    const { description, created } = this.props;
+  render() {
+  
+  const { description, created } = this.props;
 
     return (
       <div className="view" style={this.props.taskStyle}>

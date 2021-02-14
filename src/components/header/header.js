@@ -10,10 +10,6 @@ export default class Header extends React.Component {
         }
         
         this.onButtonEnter = (e) => {
-            
-            // if (e.charCode === 13 &&   e.target.value === "") {
-            //     return;
-            // }
 
             this.setState({
                 newTaskValue: e.target.value,
@@ -33,6 +29,7 @@ export default class Header extends React.Component {
       }
 
       render() {
+
         return (
             <header className="header"
                     onSubmit = {this.onSubmit}>
