@@ -25,12 +25,12 @@ export default class NewTaskForm extends React.Component {
       this.setState({
         newTaskValue: e.target.value,
       })
+    }
 
-      this.changeTask = (e) => {
+    this.changeTask = (e) => {
 
-        e.preventDefault();
-        onTaskChange(this.state.newTaskValue, id);
-      }
+      e.preventDefault();
+      onTaskChange(this.state.newTaskValue, id);
     }
   }
 

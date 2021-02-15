@@ -18,16 +18,29 @@ export default class TaskField extends React.Component {
       taskStyle: {display: "block"},
     }
 
-    TaskField.defaultProps = {
-      taskStyle: {
-        display: "block"
-      }
-    };
-    
-    this.onLabelClick = () => {
-      this.props.onTaskStateChange();
+    // TaskField.defaultProps = {
+    //   taskStyle: {
+    //     display: "block",
+    //     // checked: !this.props.completed,
+    //   }
+    // };
+
+    this.state = {
+      checStatus: this.props.completed,
     }
 
+    this.onCeck = () => {
+
+      this.props.onTaskStateChange();
+
+      this.setState(() => {
+  
+        return {
+          checStatus: !this.props.completed,
+        };
+      })
+    }
+    
     this.onTaskFieldFocus = () => {
       this.props.onEdit();
     }
@@ -39,8 +52,12 @@ export default class TaskField extends React.Component {
 
     return (
       <div className="view" style={this.props.taskStyle}>
-        <input className="toggle" type="checkbox"/>
-        <label onClick = { this.onLabelClick }>
+        <input className="toggle" 
+                type="checkbox" 
+                checked = {this.state.checStatus}
+                onChange = { this.onCeck } 
+                />
+        <label >
           <span className="description">{ description }</span>
           <span className="created">{ formatDistanceToNow(new Date(created), 'MM/dd/yyyy') + ' ago' }</span>
         </label>

@@ -121,7 +121,7 @@ class TodoApp extends React.Component {
 
       const idx = this.state.tasksData.findIndex((task) => task.id === id);
       const oldStateChangedTask = state.tasksData.slice(idx, idx + 1);
-      let newStateChangedTask = [{...oldStateChangedTask[0], completed: !oldStateChangedTask[0].completed }]      
+      let newStateChangedTask = [{...oldStateChangedTask[0], completed: !oldStateChangedTask[0].completed }]
       newStateChangedTask = [{...oldStateChangedTask[0], description: taskText, editStatus: !oldStateChangedTask[0].editStatus}]
       const newArr =[ ...state.tasksData.slice(0, idx), ...newStateChangedTask, ...state.tasksData.slice(idx + 1) ];
 
