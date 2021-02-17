@@ -39,7 +39,7 @@ class TasksFilter extends React.Component {
   };
 
   render() {
-    console.log(this.props);
+    
     return (
       <ul className="filters" onClick={this.onViewCnahge}>
           <li>
