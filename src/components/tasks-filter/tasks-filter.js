@@ -1,7 +1,8 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import './tasks-filter.css'
 
-export default  class TasksFilter extends React.Component {
+class TasksFilter extends React.Component {
 
   constructor(props) {
   super(props);
@@ -38,7 +39,7 @@ export default  class TasksFilter extends React.Component {
   };
 
   render() {
-    
+    console.log(this.props);
     return (
       <ul className="filters" onClick={this.onViewCnahge}>
           <li>
@@ -55,25 +56,8 @@ export default  class TasksFilter extends React.Component {
   }
 }
 
-
-/*
-
-const TasksFilter2  = () => {
-    return (
-      <ul className="filters" onClick={console.log("CLICKED")}>
-          <li>
-            <button className="selected">All</button>
-          </li>
-          <li>
-            <button>Active</button>
-          </li>
-          <li>
-            <button>Completed</button>
-          </li>
-      </ul>
-    );
-}; 
+TasksFilter.propTypes = {
+  onFilterCnahge: PropTypes.func,
+}
 
 export default TasksFilter;
-
-*/

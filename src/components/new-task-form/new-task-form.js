@@ -1,19 +1,14 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import './new-task-form.css';
 
-export default class NewTaskForm extends React.Component {
+class NewTaskForm extends React.Component {
   
   constructor(props) {
     super(props);
     this.taskInput = React.createRef();
 
     const { description, onTaskChange, id, formStyle } = this.props;
-    
-    // NewTaskForm.defaultProps = {
-    //   formStyle: {
-    //     display: "none",
-    //   }
-    // };
     
     this.state = {
       newTaskValue: description,
@@ -52,3 +47,12 @@ export default class NewTaskForm extends React.Component {
     );
   }
 }
+
+NewTaskForm.propTypes = {
+  description: PropTypes.string.isRequired,
+  onTaskChange: PropTypes.func.isRequired,
+  id: PropTypes.number.isRequired,
+  formStyle: PropTypes.object.isRequired,
+}
+
+export default NewTaskForm;

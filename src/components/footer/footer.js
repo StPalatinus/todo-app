@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import TasksFilter from '../tasks-filter';
 import './footer.css'
 
@@ -16,11 +17,11 @@ const Footer = ({countUnfinished, changeFilterState, clearCompleted}) => {
     clearCompleted();
   }
 
-  const unfinishedTCount = countUnfinished();
+  const unfinishedCount = countUnfinished();
   
     return (
       <footer className="footer">
-      <span className="todo-count">{ unfinishedTCount } items left</span>
+      <span className="todo-count">{ unfinishedCount } items left</span>
       <span className="filters-wrapper">
         <TasksFilter onFilterCnahge = { onFilterCnahge } />
       </span>
@@ -29,5 +30,11 @@ const Footer = ({countUnfinished, changeFilterState, clearCompleted}) => {
     </footer>
     );
 }; 
+
+Footer.propTypes = {
+  countUnfinished: PropTypes.func.isRequired,
+  changeFilterState: PropTypes.func.isRequired,
+  clearCompleted: PropTypes.func.isRequired,
+}
 
 export default Footer;

@@ -1,10 +1,14 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+
 import './header.css';
 
-export default class Header extends React.Component {
+class Header extends React.Component {
     constructor(props) {
         super(props);
 
+        const { onTaskAdd } = this.props;
+        
         this.state = {
             newTaskValue: "",
         }
@@ -21,7 +25,7 @@ export default class Header extends React.Component {
             if (this.state.newTaskValue === "") {
                 return false;
             }
-            this.props.onTaskAdd(this.state.newTaskValue);
+            onTaskAdd(this.state.newTaskValue);
             this.setState({
                 newTaskValue: "",
             });
@@ -46,3 +50,9 @@ export default class Header extends React.Component {
         );
     }
 }
+
+Header.propTypes = {
+    onTaskAdd: PropTypes.func.isRequired,
+}
+
+export default Header;

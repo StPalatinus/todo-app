@@ -15,21 +15,21 @@ class TodoApp extends React.Component {
       tasksData: [
         {
           description: 'Completed task',
-          created: new Date() - 1020000,
+          created: new Date(new Date() - 1020000),
           editStatus: false,
           completed: true,
           id: 1,
         },
         {
           description: 'Test task',
-          created: new Date() - 300000,
+          created: new Date(new Date() - 300000),
           editStatus: false,
           completed: false,
           id: 2,
         },
         {
           description: 'Active task',
-          created: new Date() - 300000,
+          created: new Date(new Date() - 300000),
           editStatus: false,
           completed: false,
           id: 3,
@@ -94,7 +94,7 @@ class TodoApp extends React.Component {
 
       const newTaskObj = {
         description: text,
-          created: new Date() - 1,
+          created: new Date(),
           editStatus: false,
           completed: false,
           id: this.directId++,

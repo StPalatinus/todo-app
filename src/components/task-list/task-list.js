@@ -1,17 +1,21 @@
 import React from 'react';
-import Task from '../task'
+import PropTypes from 'prop-types';
+import Task from '../task';
 import './task-list.css';
 
-export default class TaskList extends React.Component {
-  // constructor(props) {
-  //   super(props);
+class TaskList extends React.Component {
+  constructor(props) {
+    super(props);
 
-  // }
+    TaskList.defaultProps = {
+      filterState: "All",
+    }
+  }
 
   render() {
     const { tasksList, onDelete, onEdit, taskStateChange, filterState, onTaskChange } = this.props
     let classList = "";
-    
+
     const tasks = tasksList.map((taskProps) => {
 
       taskProps.completed ? classList = "completed" : classList = "";
@@ -41,3 +45,19 @@ export default class TaskList extends React.Component {
       );
   }
 }
+
+TaskList.propTypes = {
+  tasksList: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.oneOfType([
+    PropTypes.string, 
+    PropTypes.number, 
+    PropTypes.bool,
+    PropTypes.instanceOf(Date),
+  ]))).isRequired,
+  onDelete: PropTypes.func.isRequired,
+  onEdit: PropTypes.func.isRequired,
+  taskStateChange: PropTypes.func.isRequired,
+  filterState: PropTypes.string,
+  onTaskChange: PropTypes.func,
+}
+
+export default TaskList;

@@ -1,9 +1,10 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import NewTaskForm from '../new-task-form';
 import './task.css';
-import TaskField from '../task-field'
+import TaskField from '../task-field';
 
-export default class Task extends React.Component {
+class Task extends React.Component {
   constructor(props) {
     super(props);
 
@@ -11,7 +12,8 @@ export default class Task extends React.Component {
       description: "Default task",
       editStatus: false,
       completed: false,
-      id: 777,
+      // id: 777,
+      id: () => {return Math.floor(Math.random() * 1000000)},
       created: new Date() - 1,
       onDelete: () => {},
       onEdit: () => {},
@@ -21,15 +23,14 @@ export default class Task extends React.Component {
   }
   
 
-  focusTaskInput = (_) => {
+  focusTaskInput = () => {
     if (this.taskInput) this.taskInput.focus();
   }
   
   render() {
 
     const {description, editStatus, onTaskChange, id} = this.props;
-
-    let newTaskForm 
+    let newTaskForm;
 
     const formStyle = {
       display: editStatus ? 'block': 'none',
@@ -59,3 +60,16 @@ export default class Task extends React.Component {
     );
   }
 }
+
+Task.propTypes = {
+  description: PropTypes.string,
+  editStatus: PropTypes.bool,
+  id: PropTypes.number,
+  created: PropTypes.instanceOf(Date).isRequired,
+  onDelete: PropTypes.func,
+  onEdit: PropTypes.func,
+  onTaskChange: PropTypes.func.isRequired,
+  onTaskStateChange: PropTypes.func,
+}
+
+export default Task;

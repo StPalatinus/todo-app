@@ -1,8 +1,9 @@
 import React from 'react';
-import formatDistanceToNow from 'date-fns/formatDistanceToNow'
-import './task-field.css'
+import PropTypes from 'prop-types';
+import formatDistanceToNow from 'date-fns/formatDistanceToNow';
+import './task-field.css';
 
-export default class TaskField extends React.Component {
+class TaskField extends React.Component {
   constructor(props) {
     super(props);
 
@@ -10,7 +11,8 @@ export default class TaskField extends React.Component {
       description: "Default task",
       editStatus: false,
       completed: false,
-      id: 777,
+      // id: 777,
+      id: () => {return Math.floor(Math.random() * 1000000)},
       onDelete: () => {},
       onEdit: () => {},
       onTaskChange: {},
@@ -18,27 +20,20 @@ export default class TaskField extends React.Component {
       taskStyle: {display: "block"},
     }
 
-    // TaskField.defaultProps = {
-    //   taskStyle: {
-    //     display: "block",
-    //     // checked: !this.props.completed,
-    //   }
-    // };
-
-    this.state = {
-      checStatus: this.props.completed,
-    }
+    // this.state = {
+    //   checStatus: this.props.completed,
+    // }
 
     this.onCeck = () => {
 
       this.props.onTaskStateChange();
 
-      this.setState(() => {
+      // this.setState(() => {
   
-        return {
-          checStatus: !this.props.completed,
-        };
-      })
+      //   // return {
+      //   //   checStatus: !this.props.completed,
+      //   // };
+      // })
     }
     
     this.onTaskFieldFocus = () => {
@@ -47,14 +42,14 @@ export default class TaskField extends React.Component {
   }
 
   render() {
-  
+    
   const { description, created } = this.props;
 
     return (
       <div className="view" style={this.props.taskStyle}>
         <input className="toggle" 
                 type="checkbox" 
-                checked = {this.state.checStatus}
+                checked = {this.props.completed}
                 onChange = { this.onCeck } 
                 />
         <label >
@@ -69,3 +64,18 @@ export default class TaskField extends React.Component {
     );
   }
 }
+
+TaskField.protoTypes ={
+  completed: PropTypes.bool,
+  created: PropTypes.instanceOf(Date).isRequired,
+  description: PropTypes.string,
+  editStatus: PropTypes.bool,
+  id: PropTypes.number,
+  onDelete: PropTypes.func,
+  onEdit: PropTypes.func,
+  onTaskChange: PropTypes.func.isRequired,
+  onTaskStateChange: PropTypes.func,
+  taskStyle: PropTypes.objectOf(PropTypes.string),
+}
+
+export default TaskField;
