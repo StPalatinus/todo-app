@@ -46,7 +46,7 @@ class TaskField extends React.Component {
   componentDidMount() {
     this.timerID = setInterval(
       () => this.tick(),
-      15000
+      30000
     );
   }
 
