@@ -73,7 +73,7 @@ class TodoApp extends React.Component {
     })
   };
 
-  taskStateChange = (id) => {
+  taskCompleteStateToggle = (id) => {
     
     this.setState((state) => {
 
@@ -110,9 +110,11 @@ class TodoApp extends React.Component {
 
   changeFilterState = (showOnly) => {
 
-    this.setState({
+    this.setState( () => {
+      return {
         filterState: showOnly
-      })
+      };
+    });
   };
 
   changeTask = (taskText, id) => {
@@ -146,20 +148,37 @@ class TodoApp extends React.Component {
   }
 
   render() {
-  
+
+    let taskField;
+    let nodataStyle = {
+      color: "gray",
+      fontSize: "24px",
+      fontFamily: "inherit",
+      fontWeight: "inherit",
+      lineHeight: "2.4em",
+      boxSizing: "border-box",
+      paddingLeft: "60px",
+    }
+
+    if (this.state.tasksData.length > 0) {
+      taskField = <TaskList 
+                    tasksList ={ this.state.tasksData }
+                    filterState = {this.state.filterState}
+                    onDelete = { this.deleteTask } 
+                    onEdit = { this.editTask } 
+                    taskCompleteStateToggle = {this.taskCompleteStateToggle} 
+                    onTaskChange = {this.changeTask} />
+    } else {
+      taskField = <div className="nodata" style={ nodataStyle }>No todos added</div>
+    }
+
     return (
       <section className="todoapp">
           <Header 
           onTaskAdd = {this.addNewTask} 
           />
         <section className="main">
-          <TaskList 
-              tasksList ={ this.state.tasksData }
-              filterState = {this.state.filterState}
-              onDelete = { this.deleteTask } 
-              onEdit = { this.editTask } 
-              taskStateChange = {this.taskStateChange} 
-              onTaskChange = {this.changeTask} />
+          { taskField }
           <Footer countUnfinished = {this.countUnfinished}
                   changeFilterState = {this.changeFilterState}
                   clearCompleted = {this.clearCompleted} />

@@ -17,10 +17,12 @@ class NewTaskForm extends React.Component {
 
     this.onButtonEnter = (e) => {
       
-      this.setState({
-        newTaskValue: e.target.value,
-      })
-    }
+      this.setState( ()=> {
+        return {
+          newTaskValue: e.target.value,
+        };
+      });
+    };
 
     this.changeTask = (e) => {
 

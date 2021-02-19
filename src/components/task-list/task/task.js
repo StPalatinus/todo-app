@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import NewTaskForm from '../new-task-form';
+import NewTaskForm from './new-task-form';
 import './task.css';
-import TaskField from '../task-field';
+import TaskField from './task-field';
 
 class Task extends React.Component {
   constructor(props) {
@@ -12,7 +12,6 @@ class Task extends React.Component {
       description: "Default task",
       editStatus: false,
       completed: false,
-      // id: 777,
       id: () => {return Math.floor(Math.random() * 1000000)},
       created: new Date() - 1,
       onDelete: () => {},

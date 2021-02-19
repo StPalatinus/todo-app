@@ -15,8 +15,10 @@ class Header extends React.Component {
         
         this.onButtonEnter = (e) => {
 
-            this.setState({
+            this.setState(() => {
+                return{
                 newTaskValue: e.target.value,
+                }
             });
         }
 
@@ -42,6 +44,7 @@ class Header extends React.Component {
                 <input className="new-todo" 
                         placeholder = "What needs to be done?" 
                         onChange = {this.onButtonEnter}
+                        // onChange = { (e) => { this.setState( () => { return { newTaskValue: e.target.value, }} ) } }
                         autoFocus 
                         value = {this.state.newTaskValue} 
                         />

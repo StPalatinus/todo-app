@@ -1,38 +1,43 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Task from '../task';
+import classNames from 'classnames/bind';
+import Task from './task';
 import './task-list.css';
+import {filterOptions} from '../../assets/filter-options';
 
 class TaskList extends React.Component {
   constructor(props) {
     super(props);
 
     TaskList.defaultProps = {
-      filterState: "All",
+      filterState: filterOptions.displayActive,
     }
   }
 
   render() {
-    const { tasksList, onDelete, onEdit, taskStateChange, filterState, onTaskChange } = this.props
-    let classList = "";
+    const { tasksList, onDelete, onEdit, taskCompleteStateToggle, filterState, onTaskChange } = this.props
+
+    console.log(filterOptions);
 
     const tasks = tasksList.map((taskProps) => {
-
-      taskProps.completed ? classList = "completed" : classList = "";
-      if (filterState === "Active" && taskProps.completed) {
-        return false;
-      }
-      if (filterState === "Completed" && !taskProps.completed) {
-        return false;
-      }
+      let classList = classNames({
+        'completed': taskProps.completed,
+      });
       
+      if (filterState === filterOptions.displayActive && taskProps.completed) {
+        return null;
+      }
+      if (filterState === filterOptions.displayCompleted && !taskProps.completed) {
+        return null;
+      }
+
       return (
         <li className={classList} key={taskProps.id}>
             <Task 
               {... taskProps} 
               onDelete = { () => onDelete(taskProps.id) } 
               onEdit = { () => onEdit(taskProps.id) }
-              onTaskStateChange = { () => taskStateChange(taskProps.id) } 
+              ontaskCompleteStateToggle = { () => taskCompleteStateToggle(taskProps.id) } 
               onTaskChange = { onTaskChange } />
         </li>
       );
@@ -55,7 +60,7 @@ TaskList.propTypes = {
   ]))).isRequired,
   onDelete: PropTypes.func.isRequired,
   onEdit: PropTypes.func.isRequired,
-  taskStateChange: PropTypes.func.isRequired,
+  taskCompleteStateToggle: PropTypes.func.isRequired,
   filterState: PropTypes.string,
   onTaskChange: PropTypes.func,
 }
