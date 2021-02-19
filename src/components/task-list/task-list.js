@@ -17,8 +17,6 @@ class TaskList extends React.Component {
   render() {
     const { tasksList, onDelete, onEdit, taskCompleteStateToggle, filterState, onTaskChange } = this.props
 
-    console.log(filterOptions);
-
     const tasks = tasksList.map((taskProps) => {
       let classList = classNames({
         'completed': taskProps.completed,
