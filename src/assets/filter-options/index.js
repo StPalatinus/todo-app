@@ -1,3 +1,3 @@
-import {filterOptions} from './filter-options';
+import filterOptions from './filter-options';
 
-export {filterOptions};
+export default filterOptions;

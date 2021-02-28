@@ -11,18 +11,17 @@ class TaskField extends React.Component {
 
     TaskField.defaultProps = {
       description: "Default task",
-      editStatus: false,
+      // editStatus: false,
       completed: false,
-      id: () => {return Math.floor(Math.random() * 1000000)},
+      // id: () => Math.floor(Math.random() * 1000000),
       onDelete: () => {},
       onEdit: () => {},
-      onTaskChange: {},
+      // onTaskChange: {},
       ontaskCompleteStateToggle: () => {},
-      taskStyle: {display: "block"},
     }
 
     this.state = {
-      creatTime: created,
+      createTime: created,
     }
 
     this.onCheck = () => {
@@ -47,11 +46,9 @@ class TaskField extends React.Component {
   }
 
   tick() {
-    this.setState( () => {
-      return {
-        date: new Date(),
-      };
-    });
+    this.setState( () => ({
+        // date: new Date(),  // temporarily disabled until simthing works
+      }));
   };
 
   // tick() {
@@ -65,7 +62,7 @@ class TaskField extends React.Component {
   const { description} = this.props;
 
     return (
-      <div className="view" style={this.props.taskStyle}>
+      <div className="view">
         <input className="toggle" 
                 type="checkbox" 
                 checked = {this.props.completed}
@@ -73,28 +70,34 @@ class TaskField extends React.Component {
                 />
         <label >
           <span className="description">{ description }</span>
-          <span className="created">{ formatDistanceToNow(new Date(this.state.creatTime), 'MM/dd/yyyy') + ' ago' }</span>
+          <span className="created">{ 
+            `${formatDistanceToNow(new Date(this.state.createTime), 'MM/dd/yyyy')} +  ago`
+          }</span>
         </label>
         <button className="icon icon-edit" 
-                onClick = {this.props.onEdit}></button>
+                onClick = {this.props.onEdit}
+                type="button"
+                aria-label="Edit"/>
         <button className="icon icon-destroy" 
-                onClick = {this.props.onDelete}></button>
+                onClick = {this.props.onDelete}
+                type="button"
+                aria-label="Remove"/>
       </div>
     );
   }
 }
 
-TaskField.protoTypes ={
+TaskField.propTypes ={
   completed: PropTypes.bool,
   created: PropTypes.instanceOf(Date).isRequired,
   description: PropTypes.string,
-  editStatus: PropTypes.bool,
-  id: PropTypes.number,
+  // editStatus: PropTypes.bool,
+  // id: PropTypes.number,
   onDelete: PropTypes.func,
   onEdit: PropTypes.func,
-  onTaskChange: PropTypes.func.isRequired,
+  // onTaskChange: PropTypes.func,
   ontaskCompleteStateToggle: PropTypes.func,
-  taskStyle: PropTypes.objectOf(PropTypes.string),
+  // taskStyle: PropTypes.objectOf(PropTypes.string),
 }
 
 export default TaskField;

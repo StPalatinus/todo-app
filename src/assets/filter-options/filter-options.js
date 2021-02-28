@@ -1,7 +1,7 @@
-let filterOptions = {
+const filterOptions = {
     displayAll: "All",
     displayActive: "Active",
     displayCompleted: "Completed",
 };
 
-export {filterOptions};
+export default filterOptions;

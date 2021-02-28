@@ -13,17 +13,15 @@ class Header extends React.Component {
             newTaskValue: "",
         }
         
-        this.onButtonEnter = (e) => {
+        this.onButtonEnter = (evt) => {
 
-            this.setState(() => {
-                return{
-                newTaskValue: e.target.value,
-                }
-            });
+            this.setState(() => ({
+                newTaskValue: evt.target.value,
+            }));
         }
 
-        this.onSubmit = (e) => {
-            e.preventDefault();
+        this.onSubmit = (evt) => {
+            evt.preventDefault();
             if (this.state.newTaskValue === "") {
                 return false;
             }
@@ -31,6 +29,7 @@ class Header extends React.Component {
             this.setState({
                 newTaskValue: "",
             });
+            return true;
         };
       }
 
@@ -44,7 +43,6 @@ class Header extends React.Component {
                 <input className="new-todo" 
                         placeholder = "What needs to be done?" 
                         onChange = {this.onButtonEnter}
-                        // onChange = { (e) => { this.setState( () => { return { newTaskValue: e.target.value, }} ) } }
                         autoFocus 
                         value = {this.state.newTaskValue} 
                         />

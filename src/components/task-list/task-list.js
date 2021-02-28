@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames/bind';
 import Task from './task';
 import './task-list.css';
-import {filterOptions} from '../../assets/filter-options';
+import filterOptions from '../../assets/filter-options';
 
 class TaskList extends React.Component {
   constructor(props) {
@@ -18,7 +18,7 @@ class TaskList extends React.Component {
     const { tasksList, onDelete, onEdit, taskCompleteStateToggle, filterState, onTaskChange } = this.props
 
     const tasks = tasksList.map((taskProps) => {
-      let classList = classNames({
+      const classList = classNames({
         'completed': taskProps.completed,
       });
       
@@ -31,12 +31,12 @@ class TaskList extends React.Component {
 
       return (
         <li className={classList} key={taskProps.id}>
-            <Task 
-              {... taskProps} 
-              onDelete = { () => onDelete(taskProps.id) } 
-              onEdit = { () => onEdit(taskProps.id) }
-              ontaskCompleteStateToggle = { () => taskCompleteStateToggle(taskProps.id) } 
-              onTaskChange = { onTaskChange } />
+          <Task 
+            {... taskProps} 
+            onDelete = { () => onDelete(taskProps.id) } 
+            onEdit = { () => onEdit(taskProps.id) }
+            ontaskCompleteStateToggle = { () => taskCompleteStateToggle(taskProps.id) } 
+            onTaskChange = { onTaskChange } />
         </li>
       );
     });
@@ -60,7 +60,7 @@ TaskList.propTypes = {
   onEdit: PropTypes.func.isRequired,
   taskCompleteStateToggle: PropTypes.func.isRequired,
   filterState: PropTypes.string,
-  onTaskChange: PropTypes.func,
+  onTaskChange: PropTypes.func.isRequired,
 }
 
 export default TaskList;

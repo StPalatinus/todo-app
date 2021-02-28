@@ -8,25 +8,22 @@ class NewTaskForm extends React.Component {
     super(props);
     this.taskInput = React.createRef();
 
-    const { description, onTaskChange, id, formStyle } = this.props;
+    const { description, onTaskChange, id} = this.props;
     
     this.state = {
       newTaskValue: description,
-      formStyle: formStyle,
     }
 
-    this.onButtonEnter = (e) => {
+    this.onButtonEnter = (evt) => {
       
-      this.setState( ()=> {
-        return {
-          newTaskValue: e.target.value,
-        };
-      });
+      this.setState( ()=> ({
+          newTaskValue: evt.target.value,
+        }));
     };
 
-    this.changeTask = (e) => {
+    this.changeTask = (evt) => {
 
-      e.preventDefault();
+      evt.preventDefault();
       onTaskChange(this.state.newTaskValue, id);
     }
   }
@@ -43,7 +40,6 @@ class NewTaskForm extends React.Component {
           className="edit" 
           ref = {this.taskInput}
           value = {this.state.newTaskValue}
-          style = {this.props.formStyle}
           onChange = { this.onButtonEnter } />
     </form>
     );
@@ -54,7 +50,6 @@ NewTaskForm.propTypes = {
   description: PropTypes.string.isRequired,
   onTaskChange: PropTypes.func.isRequired,
   id: PropTypes.number.isRequired,
-  formStyle: PropTypes.object.isRequired,
 }
 
 export default NewTaskForm;

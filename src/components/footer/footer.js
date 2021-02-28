@@ -17,18 +17,19 @@ const Footer = ({countUnfinished, changeFilterState, clearCompleted}) => {
   
     return (
       <footer className="footer">
-      <span className="todo-count">{ countUnfinished() } items left</span>
-      <span className="filters-wrapper">
-        <TasksFilter onFilterCnahge = { onFilterCnahge } />
-      </span>
-      <button className="clear-completed" 
-              onClick = { () => clearCompleted() }>Clear completed</button>
-    </footer>
+        <span className="todo-count">{ countUnfinished() } items left</span>
+        <span className="filters-wrapper">
+          <TasksFilter onFilterCnahge = { onFilterCnahge } />
+        </span>
+        <button className="clear-completed" 
+                type="button"
+                onClick = { () => clearCompleted() }>Clear completed</button>
+      </footer>
     );
 }; 
 
 Footer.propTypes = {
-  countUnfinished: PropTypes.func.isRequired,
+  countUnfinished: PropTypes.func,
   changeFilterState: PropTypes.func.isRequired,
   clearCompleted: PropTypes.func.isRequired,
 }

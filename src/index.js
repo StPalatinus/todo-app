@@ -7,42 +7,29 @@ import './index.css';
 
 class TodoApp extends React.Component {
   constructor() {
-  super();
-
-   this.directId = 100;
+    super();
 
     this.state = {
-      tasksData: [
-        {
-          description: 'Completed task',
-          created: new Date(new Date() - 1020000),
-          editStatus: false,
-          completed: true,
-          id: 1,
-        },
-        {
-          description: 'Test task',
-          created: new Date(new Date() - 300000),
-          editStatus: false,
-          completed: false,
-          id: 2,
-        },
-        {
-          description: 'Active task',
-          created: new Date(new Date() - 300000),
-          editStatus: false,
-          completed: false,
-          id: 3,
-        },
-      ],
+      tasksData: [],
       filterState: "All",
+      lastId: 0,
     };
+
+    if (localStorage.getItem('todos')) {
+
+      const restoredStae = this.loadTodosFromStorage('todos');
+      this.state.tasksData = restoredStae;
+      this.state.lastId = JSON.parse(localStorage.getItem('lastId'));
+    } 
+    else {
+      this.state.lastId = 0;
+    }
   }
 
   countUnfinished = () => {
-    let unfinishedTasksCount = this.state.tasksData.filter((task) => {
-      return task.completed === false;
-    }); 
+    const unfinishedTasksCount = this.state.tasksData.filter((task) => 
+      task.completed === false
+    ); 
     return unfinishedTasksCount.length;
   }
   
@@ -51,6 +38,7 @@ class TodoApp extends React.Component {
 
       const idx = state.tasksData.findIndex((task) => task.id === id);
       const newArr =[ ...state.tasksData.slice(0, idx), ...state.tasksData.slice(idx + 1) ];
+      this.saveLocalStorage(newArr);
       
       return {
         tasksData: newArr
@@ -61,11 +49,12 @@ class TodoApp extends React.Component {
   editTask = (id) => {
     this.setState((state) => {
 
-      const idx = this.state.tasksData.findIndex((task) => task.id === id);
+    const idx = this.state.tasksData.findIndex((task) => task.id === id);
       const oldStateChangedTask = state.tasksData.slice(idx, idx + 1);
       let newStateChangedTask = [{...oldStateChangedTask[0], completed: !oldStateChangedTask[0].completed }]      
       newStateChangedTask = [{...oldStateChangedTask[0], editStatus: !oldStateChangedTask[0].editStatus}]
       const newArr =[ ...state.tasksData.slice(0, idx), ...newStateChangedTask, ...state.tasksData.slice(idx + 1) ];
+      this.saveLocalStorage(newArr);
 
       return {
         tasksData: newArr
@@ -81,6 +70,7 @@ class TodoApp extends React.Component {
       const oldStateChangedTask = state.tasksData.slice(idx, idx + 1);
       const newStateChangedTask = [{...oldStateChangedTask[0], completed: !oldStateChangedTask[0].completed }]      
       const newArr =[ ...state.tasksData.slice(0, idx), ...newStateChangedTask, ...state.tasksData.slice(idx + 1) ];
+      this.saveLocalStorage(newArr);
 
       return {
         tasksData: newArr
@@ -89,7 +79,7 @@ class TodoApp extends React.Component {
   };
 
   addNewTask = (text) => {
-    
+    localStorage.setItem('lastId',JSON.stringify(this.state.lastId + 1));
     this.setState((state) => {
 
       const newTaskObj = {
@@ -97,11 +87,11 @@ class TodoApp extends React.Component {
           created: new Date(),
           editStatus: false,
           completed: false,
-          id: this.directId++,
+          id: this.state.lastId += 1,
       }
-
       const newArr =[ ...state.tasksData, newTaskObj];
-      
+      this.saveLocalStorage(newArr);
+
       return {
         tasksData: newArr
       };
@@ -109,12 +99,10 @@ class TodoApp extends React.Component {
   };
 
   changeFilterState = (showOnly) => {
-
-    this.setState( () => {
-      return {
+    
+    this.setState( () => ({
         filterState: showOnly
-      };
-    });
+      }));
   };
 
   changeTask = (taskText, id) => {
@@ -124,8 +112,11 @@ class TodoApp extends React.Component {
       const idx = this.state.tasksData.findIndex((task) => task.id === id);
       const oldStateChangedTask = state.tasksData.slice(idx, idx + 1);
       let newStateChangedTask = [{...oldStateChangedTask[0], completed: !oldStateChangedTask[0].completed }]
-      newStateChangedTask = [{...oldStateChangedTask[0], description: taskText, editStatus: !oldStateChangedTask[0].editStatus}]
+      newStateChangedTask = [{
+        ...oldStateChangedTask[0], description: taskText, editStatus: !oldStateChangedTask[0].editStatus
+      }]
       const newArr =[ ...state.tasksData.slice(0, idx), ...newStateChangedTask, ...state.tasksData.slice(idx + 1) ];
+      this.saveLocalStorage(newArr);
 
       return {
         tasksData: newArr
@@ -135,7 +126,7 @@ class TodoApp extends React.Component {
 
   clearCompleted = () => {
     this.setState((state) => {
-      let newState = []
+      const newState = []
       state.tasksData.forEach((task) => {
          if (!task.completed) {
             newState.push(task);
@@ -147,10 +138,24 @@ class TodoApp extends React.Component {
     })
   }
 
+  saveLocalStorage = (item) => {
+    localStorage.setItem('todos', JSON.stringify(item));
+  };
+
+  loadTodosFromStorage = (item) => {
+      const lsRestored = JSON.parse(localStorage.getItem(item));
+
+      lsRestored.forEach((todoRestored) => {
+        todoRestored.created = new Date(Date.parse(todoRestored.created));
+      });
+
+      return lsRestored;  
+  };
+
   render() {
 
     let taskField;
-    let nodataStyle = {
+    const nodataStyle = {
       color: "gray",
       fontSize: "24px",
       fontFamily: "inherit",
@@ -171,12 +176,10 @@ class TodoApp extends React.Component {
     } else {
       taskField = <div className="nodata" style={ nodataStyle }>No todos added</div>
     }
-
+    
     return (
       <section className="todoapp">
-          <Header 
-          onTaskAdd = {this.addNewTask} 
-          />
+        <Header onTaskAdd = {this.addNewTask} />
         <section className="main">
           { taskField }
           <Footer countUnfinished = {this.countUnfinished}

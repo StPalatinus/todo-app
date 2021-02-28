@@ -12,8 +12,7 @@ class Task extends React.Component {
       description: "Default task",
       editStatus: false,
       completed: false,
-      id: () => {return Math.floor(Math.random() * 1000000)},
-      created: new Date() - 1,
+      id: () => Math.floor(Math.random() * 1000000),
       onDelete: () => {},
       onEdit: () => {},
       onTaskChange: {},
@@ -31,30 +30,19 @@ class Task extends React.Component {
     const {description, editStatus, onTaskChange, id} = this.props;
     let newTaskForm;
 
-    const formStyle = {
-      display: editStatus ? 'block': 'none',
-    };
-
-    const taskStyle = {
-      display: editStatus ? 'none': 'block'
-    };
-
     if (editStatus) {
       newTaskForm = <NewTaskForm editStatus = { editStatus } 
                     description = { description }  
                     onTaskChange = { onTaskChange }
-                    id = { id }
-                    formStyle = {formStyle} />
+                    id = { id } />
     } else {
-      newTaskForm = null;
+      newTaskForm = <TaskField  { ...this.props } 
+                    id = { id }  />
     }
     
     return (
       <div>
-        <TaskField  { ...this.props } 
-                    taskStyle ={ taskStyle }
-                    id = { id }  />
-                    {newTaskForm}
+        {newTaskForm}
       </div>  
     );
   }
@@ -67,8 +55,9 @@ Task.propTypes = {
   created: PropTypes.instanceOf(Date).isRequired,
   onDelete: PropTypes.func,
   onEdit: PropTypes.func,
-  onTaskChange: PropTypes.func.isRequired,
+  onTaskChange: PropTypes.func,
   onTaskStateChange: PropTypes.func,
+  completed: PropTypes.bool,
 }
 
 export default Task;
