@@ -27,22 +27,24 @@ class Task extends React.Component {
   
   render() {
 
-    const {description, editStatus, onTaskChange, id} = this.props;
-    let newTaskForm;
+    const {description, editStatus, onTaskChange, id, onDelete} = this.props;
+    let newTaskFieldOrForm;
 
     if (editStatus) {
-      newTaskForm = <NewTaskForm editStatus = { editStatus } 
+      newTaskFieldOrForm = <NewTaskForm editStatus = { editStatus } 
                     description = { description }  
                     onTaskChange = { onTaskChange }
-                    id = { id } />
+                    id = { id } 
+                    deleteEmptyTask = { onDelete }/>
     } else {
-      newTaskForm = <TaskField  { ...this.props } 
-                    id = { id }  />
+      newTaskFieldOrForm = <TaskField  { ...this.props } 
+                    id = { id } 
+                    onDelete = { onDelete } />
     }
     
     return (
       <div>
-        {newTaskForm}
+        {newTaskFieldOrForm}
       </div>  
     );
   }

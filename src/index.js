@@ -174,7 +174,7 @@ class TodoApp extends React.Component {
                     taskCompleteStateToggle = {this.taskCompleteStateToggle} 
                     onTaskChange = {this.changeTask} />
     } else {
-      taskField = <div className="nodata" style={ nodataStyle }>No todos added</div>
+      taskField = <div className="nodata" style={ nodataStyle }>No todos added yet</div>
     }
     
     return (

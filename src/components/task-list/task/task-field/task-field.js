@@ -60,18 +60,18 @@ class TaskField extends React.Component {
   render() {
     
   const { description} = this.props;
-
+    
     return (
       <div className="view">
         <input className="toggle" 
                 type="checkbox" 
-                checked = {this.props.completed}
+                checked = { this.props.completed}
                 onChange = { this.onCheck } 
                 />
         <label >
           <span className="description">{ description }</span>
           <span className="created">{ 
-            `${formatDistanceToNow(new Date(this.state.createTime), 'MM/dd/yyyy')} +  ago`
+            `${formatDistanceToNow(new Date(this.state.createTime), 'MM/dd/yyyy')}  ago`
           }</span>
         </label>
         <button className="icon icon-edit" 
