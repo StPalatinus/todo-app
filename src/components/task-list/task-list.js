@@ -11,17 +11,17 @@ class TaskList extends React.Component {
 
     TaskList.defaultProps = {
       filterState: filterOptions.displayActive,
-    }
+    };
   }
 
   render() {
-    const { tasksList, onDelete, onEdit, taskCompleteStateToggle, filterState, onTaskChange } = this.props
+    const { tasksList, onDelete, onEdit, taskCompleteStateToggle, filterState, onTaskChange } = this.props;
 
     const tasks = tasksList.map((taskProps) => {
       const classList = classNames({
-        'completed': taskProps.completed,
+        completed: taskProps.completed,
       });
-      
+
       if (filterState === filterOptions.displayActive && taskProps.completed) {
         return null;
       }
@@ -31,36 +31,32 @@ class TaskList extends React.Component {
 
       return (
         <li className={classList} key={taskProps.id}>
-          <Task 
-            {... taskProps} 
-            onDelete = { () => onDelete(taskProps.id) } 
-            onEdit = { () => onEdit(taskProps.id) }
-            ontaskCompleteStateToggle = { () => taskCompleteStateToggle(taskProps.id) } 
-            onTaskChange = { onTaskChange } />
+          <Task
+            {...taskProps}
+            onDelete={() => onDelete(taskProps.id)}
+            onEdit={() => onEdit(taskProps.id)}
+            ontaskCompleteStateToggle={() => taskCompleteStateToggle(taskProps.id)}
+            onTaskChange={onTaskChange}
+          />
         </li>
       );
     });
-  
-      return (
-        <ul className="todo-list">
-          { tasks }
-        </ul>
-      );
+
+    return <ul className="todo-list">{tasks}</ul>;
   }
 }
 
 TaskList.propTypes = {
-  tasksList: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.oneOfType([
-    PropTypes.string, 
-    PropTypes.number, 
-    PropTypes.bool,
-    PropTypes.instanceOf(Date),
-  ]))).isRequired,
+  tasksList: PropTypes.arrayOf(
+    PropTypes.objectOf(
+      PropTypes.oneOfType([PropTypes.string, PropTypes.number, PropTypes.bool, PropTypes.instanceOf(Date)])
+    )
+  ).isRequired,
   onDelete: PropTypes.func.isRequired,
   onEdit: PropTypes.func.isRequired,
   taskCompleteStateToggle: PropTypes.func.isRequired,
   filterState: PropTypes.string,
   onTaskChange: PropTypes.func.isRequired,
-}
+};
 
 export default TaskList;

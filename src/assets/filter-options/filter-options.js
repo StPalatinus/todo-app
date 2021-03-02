@@ -1,7 +1,7 @@
 const filterOptions = {
-    displayAll: "All",
-    displayActive: "Active",
-    displayCompleted: "Completed",
+  displayAll: 'All',
+  displayActive: 'Active',
+  displayCompleted: 'Completed',
 };
 
 export default filterOptions;

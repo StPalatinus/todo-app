@@ -1,19 +1,17 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import './tasks-filter.css'
+import './tasks-filter.css';
 
 class TasksFilter extends React.Component {
-
   constructor(props) {
-  super(props);
+    super(props);
 
     this.state = {
-      show : "all",
+      show: 'all',
     };
   }
 
   onViewCnahge = (evt) => {
-    
     const { onFilterCnahge } = this.props;
     const clickedButton = evt.target;
     // const filterButtons = e.currentTarget.childNodes;
@@ -21,17 +19,20 @@ class TasksFilter extends React.Component {
 
     // console.log(evt.currentTarget.parentElement.parentElement.childNodes);
     // console.log(this.state.show);
-    
+
     filterButtons.forEach((button) => {
       // console.log(clickedButton.classList.contains("selected"));
       if (button.firstChild === clickedButton) {
-        if (!clickedButton.classList.contains("selected")) {
-          clickedButton.classList.add("selected");
-          this.setState( {
+        if (!clickedButton.classList.contains('selected')) {
+          clickedButton.classList.add('selected');
+          this.setState(
+            {
               show: evt.target.textContent,
-          }, () => {
-            onFilterCnahge(this.state.show);
-          })
+            },
+            () => {
+              onFilterCnahge(this.state.show);
+            }
+          );
         }
         // if (clickedButton.classList.contains("selected")) {
         //   return false;
@@ -43,8 +44,8 @@ class TasksFilter extends React.Component {
         //     onFilterCnahge(this.state.show);
         //   })
         // }
-      } else  if (button.firstChild.classList.contains("selected")) {
-        button.firstChild.classList.remove("selected");
+      } else if (button.firstChild.classList.contains('selected')) {
+        button.firstChild.classList.remove('selected');
         // if (button.firstChild.classList.contains("selected")) {
         //   button.firstChild.classList.remove("selected");
         // }
@@ -53,29 +54,24 @@ class TasksFilter extends React.Component {
   };
 
   render() {
-    
     return (
-      <ul className="filters" >
-      {/* <ul className="filters" onClick={this.onViewCnahge}> */}
-          <li>
-            <button 
-              className="selected" 
-              type="button" 
-              onClick={this.onViewCnahge} 
-              onKeyPress={this.onViewCnahge}>All</button>
-          </li>
-          <li>
-            <button 
-            type="button"
-            onClick={this.onViewCnahge} 
-            onKeyPress={this.onViewCnahge}>Active</button>
-          </li>
-          <li>
-            <button 
-              type="button" 
-              onClick={this.onViewCnahge} 
-              onKeyPress={this.onViewCnahge}>Completed</button>
-          </li>
+      <ul className="filters">
+        {/* <ul className="filters" onClick={this.onViewCnahge}> */}
+        <li>
+          <button className="selected" type="button" onClick={this.onViewCnahge} onKeyPress={this.onViewCnahge}>
+            All
+          </button>
+        </li>
+        <li>
+          <button type="button" onClick={this.onViewCnahge} onKeyPress={this.onViewCnahge}>
+            Active
+          </button>
+        </li>
+        <li>
+          <button type="button" onClick={this.onViewCnahge} onKeyPress={this.onViewCnahge}>
+            Completed
+          </button>
+        </li>
       </ul>
     );
   }
@@ -83,10 +79,9 @@ class TasksFilter extends React.Component {
 
 TasksFilter.propTypes = {
   onFilterCnahge: PropTypes.func.isRequired,
-}
+};
 
 export default TasksFilter;
-
 
 /* VERSION BEFORE EDIT
   import React from 'react';

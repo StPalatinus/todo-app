@@ -9,7 +9,7 @@ class Task extends React.Component {
     super(props);
 
     Task.defaultProps = {
-      description: "Default task",
+      description: 'Default task',
       editStatus: false,
       completed: false,
       id: () => Math.floor(Math.random() * 1000000),
@@ -17,36 +17,32 @@ class Task extends React.Component {
       onEdit: () => {},
       onTaskChange: {},
       onTaskStateChange: () => {},
-    }
+    };
   }
-  
 
   focusTaskInput = () => {
     if (this.taskInput) this.taskInput.focus();
-  }
-  
-  render() {
+  };
 
-    const {description, editStatus, onTaskChange, id, onDelete} = this.props;
+  render() {
+    const { description, editStatus, onTaskChange, id, onDelete } = this.props;
     let newTaskFieldOrForm;
 
     if (editStatus) {
-      newTaskFieldOrForm = <NewTaskForm editStatus = { editStatus } 
-                    description = { description }  
-                    onTaskChange = { onTaskChange }
-                    id = { id } 
-                    deleteEmptyTask = { onDelete }/>
+      newTaskFieldOrForm = (
+        <NewTaskForm
+          editStatus={editStatus}
+          description={description}
+          onTaskChange={onTaskChange}
+          id={id}
+          deleteEmptyTask={onDelete}
+        />
+      );
     } else {
-      newTaskFieldOrForm = <TaskField  { ...this.props } 
-                    id = { id } 
-                    onDelete = { onDelete } />
+      newTaskFieldOrForm = <TaskField {...this.props} id={id} onDelete={onDelete} />;
     }
-    
-    return (
-      <div>
-        {newTaskFieldOrForm}
-      </div>  
-    );
+
+    return <div>{newTaskFieldOrForm}</div>;
   }
 }
 
@@ -60,6 +56,6 @@ Task.propTypes = {
   onTaskChange: PropTypes.func,
   onTaskStateChange: PropTypes.func,
   completed: PropTypes.bool,
-}
+};
 
 export default Task;
