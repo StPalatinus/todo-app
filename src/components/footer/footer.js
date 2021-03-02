@@ -12,8 +12,6 @@ const Footer = ({ countUnfinished, changeFilterState, clearCompleted }) => {
     changeFilterState(showOnly);
   };
 
-  // const unfinishedTasks = countUnfinished();
-
   return (
     <footer className="footer">
       <span className="todo-count">{countUnfinished()} items left</span>
