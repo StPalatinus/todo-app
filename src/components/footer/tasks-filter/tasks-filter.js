@@ -1,13 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import './tasks-filter.css';
+import filterOptions from '../../../assets/filter-options';
 
 class TasksFilter extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      show: 'all',
+      show: filterOptions.displayAll,
     };
   }
 
