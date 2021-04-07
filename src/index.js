@@ -98,8 +98,7 @@ class TodoApp extends React.Component {
     }));
   };
 
-  changeTask = (taskText, id, workTime) => {
-    console.log(workTime);
+  changeTask = (taskText, id) => {
     this.setState((state) => {
       const idx = this.state.tasksData.findIndex((task) => task.id === id);
       const oldStateChangedTask = state.tasksData.slice(idx, idx + 1);

@@ -34,7 +34,6 @@ class TaskField extends React.Component {
     this.timer = {
       workTimer: this.state.workTime,
       start: () => {
-        console.log(`STARTED!, start at ${this.state.workTime}`);
         this.workTimer = setInterval(() => {
           onTimerTick(this.state.workTime);
           this.setState((state) => {
@@ -46,7 +45,6 @@ class TaskField extends React.Component {
         }, 1000);
       },
       stop: () => {
-        console.log(`STOPED!, elapsed ${this.state.workTime}`);
         clearInterval(this.workTimer);
       },
     };
