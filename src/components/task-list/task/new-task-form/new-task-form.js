@@ -7,7 +7,7 @@ class NewTaskForm extends React.Component {
     super(props);
     this.taskInput = React.createRef();
 
-    const { description, onTaskChange, id, deleteEmptyTask } = this.props;
+    const { description, onTaskChange, id, deleteEmptyTask, workTime } = this.props;
 
     NewTaskForm.defaultProps = {
       deleteEmptyTask: () => {},
@@ -25,7 +25,7 @@ class NewTaskForm extends React.Component {
 
     this.changeTask = (evt) => {
       evt.preventDefault();
-      onTaskChange(this.state.newTaskValue, id);
+      onTaskChange(this.state.newTaskValue, id, workTime);
 
       if (this.state.newTaskValue === '') {
         deleteEmptyTask(id);
@@ -57,6 +57,7 @@ NewTaskForm.propTypes = {
   onTaskChange: PropTypes.func.isRequired,
   id: PropTypes.number.isRequired,
   deleteEmptyTask: PropTypes.func,
+  workTime: PropTypes.number.isRequired,
 };
 
 export default NewTaskForm;

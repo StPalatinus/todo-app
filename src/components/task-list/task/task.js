@@ -8,6 +8,8 @@ class Task extends React.Component {
   constructor(props) {
     super(props);
 
+    const { id, saveTimerData } = this.props;
+
     Task.defaultProps = {
       description: 'Default task',
       editStatus: false,
@@ -17,6 +19,10 @@ class Task extends React.Component {
       onEdit: () => {},
       onTaskChange: {},
       onTaskStateChange: () => {},
+    };
+
+    this.assignTimerToId = (timeElapsed) => {
+      saveTimerData(timeElapsed, id);
     };
   }
 
@@ -39,7 +45,7 @@ class Task extends React.Component {
         />
       );
     } else {
-      newTaskFieldOrForm = <TaskField {...this.props} id={id} onDelete={onDelete} />;
+      newTaskFieldOrForm = <TaskField {...this.props} id={id} onDelete={onDelete} onTimerTick={this.assignTimerToId} />;
     }
 
     return <div>{newTaskFieldOrForm}</div>;
@@ -56,6 +62,7 @@ Task.propTypes = {
   onTaskChange: PropTypes.func,
   onTaskStateChange: PropTypes.func,
   completed: PropTypes.bool,
+  saveTimerData: PropTypes.func.isRequired,
 };
 
 export default Task;

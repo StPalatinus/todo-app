@@ -30,10 +30,12 @@ class TodoApp extends React.Component {
   };
 
   deleteTask = (id) => {
+    // console.log(this.state);
     this.setState((state) => {
       const idx = state.tasksData.findIndex((task) => task.id === id);
       const newArr = [...state.tasksData.slice(0, idx), ...state.tasksData.slice(idx + 1)];
       this.saveLocalStorage(newArr);
+      // console.log(newArr);
 
       return {
         tasksData: newArr,
@@ -79,6 +81,7 @@ class TodoApp extends React.Component {
         editStatus: false,
         completed: false,
         id: (this.state.lastId += 1),
+        workTime: 0,
       };
       const newArr = [...state.tasksData, newTaskObj];
       this.saveLocalStorage(newArr);
@@ -95,7 +98,8 @@ class TodoApp extends React.Component {
     }));
   };
 
-  changeTask = (taskText, id) => {
+  changeTask = (taskText, id, workTime) => {
+    console.log(workTime);
     this.setState((state) => {
       const idx = this.state.tasksData.findIndex((task) => task.id === id);
       const oldStateChangedTask = state.tasksData.slice(idx, idx + 1);
@@ -130,6 +134,21 @@ class TodoApp extends React.Component {
     });
   };
 
+  saveTimerData = (timeElapsed, taskId) => {
+    this.setState((state) => {
+      const idx = this.state.tasksData.findIndex((task) => task.id === taskId);
+      const oldStateChangedTask = state.tasksData.slice(idx, idx + 1);
+      const newStateChangedTask = [{ ...oldStateChangedTask[0], workTime: timeElapsed }];
+
+      const newArr = [...state.tasksData.slice(0, idx), ...newStateChangedTask, ...state.tasksData.slice(idx + 1)];
+      this.saveLocalStorage(newArr);
+
+      return {
+        tasksData: newArr,
+      };
+    });
+  };
+
   saveLocalStorage = (item) => {
     localStorage.setItem('todos', JSON.stringify(item));
   };
@@ -157,6 +176,7 @@ class TodoApp extends React.Component {
     };
 
     if (this.state.tasksData.length > 0) {
+      // console.log(this.state.tasksData);
       taskField = (
         <TaskList
           tasksList={this.state.tasksData}
@@ -165,6 +185,8 @@ class TodoApp extends React.Component {
           onEdit={this.editTask}
           taskCompleteStateToggle={this.taskCompleteStateToggle}
           onTaskChange={this.changeTask}
+          saveTimerData={this.saveTimerData}
+          workTime={this.state.workTime}
         />
       );
     } else {

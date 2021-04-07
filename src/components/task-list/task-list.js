@@ -15,7 +15,15 @@ class TaskList extends React.Component {
   }
 
   render() {
-    const { tasksList, onDelete, onEdit, taskCompleteStateToggle, filterState, onTaskChange } = this.props;
+    const {
+      tasksList,
+      onDelete,
+      onEdit,
+      taskCompleteStateToggle,
+      filterState,
+      onTaskChange,
+      saveTimerData,
+    } = this.props;
 
     const tasks = tasksList.map((taskProps) => {
       const classList = classNames({
@@ -37,6 +45,7 @@ class TaskList extends React.Component {
             onEdit={() => onEdit(taskProps.id)}
             ontaskCompleteStateToggle={() => taskCompleteStateToggle(taskProps.id)}
             onTaskChange={onTaskChange}
+            saveTimerData={saveTimerData}
           />
         </li>
       );
@@ -57,6 +66,7 @@ TaskList.propTypes = {
   taskCompleteStateToggle: PropTypes.func.isRequired,
   filterState: PropTypes.string,
   onTaskChange: PropTypes.func.isRequired,
+  saveTimerData: PropTypes.func.isRequired,
 };
 
 export default TaskList;

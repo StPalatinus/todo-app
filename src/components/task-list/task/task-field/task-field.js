@@ -7,7 +7,7 @@ class TaskField extends React.Component {
   constructor(props) {
     super(props);
 
-    const { created } = this.props;
+    const { created, onTimerTick, workTime } = this.props;
 
     TaskField.defaultProps = {
       description: 'Default task',
@@ -15,10 +15,12 @@ class TaskField extends React.Component {
       onDelete: () => {},
       onEdit: () => {},
       ontaskCompleteStateToggle: () => {},
+      workTime: 0,
     };
 
     this.state = {
       createTime: created,
+      workTime,
     };
 
     this.onCheck = () => {
@@ -28,14 +30,35 @@ class TaskField extends React.Component {
     this.onTaskFieldFocus = () => {
       this.props.onEdit();
     };
+
+    this.timer = {
+      workTimer: this.state.workTime,
+      start: () => {
+        console.log(`STARTED!, start at ${this.state.workTime}`);
+        this.workTimer = setInterval(() => {
+          onTimerTick(this.state.workTime);
+          this.setState((state) => {
+            const newTime = state.workTime + 1;
+            return {
+              workTime: newTime,
+            };
+          });
+        }, 1000);
+      },
+      stop: () => {
+        console.log(`STOPED!, elapsed ${this.state.workTime}`);
+        clearInterval(this.workTimer);
+      },
+    };
   }
 
   componentDidMount() {
-    this.timerID = setInterval(() => this.tick(), 30000);
+    this.taskStartTimerID = setInterval(() => this.tick(), 30000);
   }
 
   componentWillUnmount() {
-    clearInterval(this.timerID);
+    clearInterval(this.taskStartTimerID);
+    this.timer.stop();
   }
 
   tick() {
@@ -44,12 +67,22 @@ class TaskField extends React.Component {
 
   render() {
     const { description } = this.props;
+    const { workTime } = this.state;
 
     return (
       <div className="view">
         <input className="toggle" type="checkbox" checked={this.props.completed} onChange={this.onCheck} />
         <label>
           <span className="description">{description}</span>
+          <span className="timer">
+            <button className="icon icon-play" type="button" aria-label="Play" onClick={this.timer.start}>
+              ▶
+            </button>
+            <button className="icon icon-pause" type="button" aria-label="Pause" onClick={this.timer.stop}>
+              ⏸
+            </button>
+            <span className="timer--elapsed-time">{workTime}</span>
+          </span>
           <span className="created">{`${formatDistanceToNow(
             new Date(this.state.createTime),
             'MM/dd/yyyy'
@@ -69,6 +102,8 @@ TaskField.propTypes = {
   onDelete: PropTypes.func,
   onEdit: PropTypes.func,
   ontaskCompleteStateToggle: PropTypes.func,
+  onTimerTick: PropTypes.func.isRequired,
+  workTime: PropTypes.number,
 };
 
 export default TaskField;
