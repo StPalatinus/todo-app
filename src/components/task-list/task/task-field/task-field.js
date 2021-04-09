@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import formatDistanceToNow from 'date-fns/formatDistanceToNow';
+// import toDate from 'date-fns/toDate'
 import './task-field.css';
 
 class TaskField extends React.Component {
@@ -25,6 +26,7 @@ class TaskField extends React.Component {
 
     this.onCheck = () => {
       this.props.ontaskCompleteStateToggle();
+      this.timer.stop();
     };
 
     this.onTaskFieldFocus = () => {
@@ -38,6 +40,7 @@ class TaskField extends React.Component {
           onTimerTick(this.state.workTime);
           this.setState((state) => {
             const newTime = state.workTime + 1;
+
             return {
               workTime: newTime,
             };
@@ -47,6 +50,13 @@ class TaskField extends React.Component {
       stop: () => {
         clearInterval(this.workTimer);
       },
+    };
+
+    this.formatTime = (timeInSeconds) => {
+      const hours = Math.floor(timeInSeconds / 60 / 60);
+      const minutes = Math.floor(timeInSeconds / 60);
+      const seconds = timeInSeconds - minutes * 60 - hours * 60 * 60;
+      return `${hours}:${minutes}:${seconds}`;
     };
   }
 
@@ -64,23 +74,42 @@ class TaskField extends React.Component {
   }
 
   render() {
-    const { description } = this.props;
+    const { description, completed } = this.props;
     const { workTime } = this.state;
+    let timer;
+
+    if (!completed) {
+      timer = (
+        <span className="timer">
+          <button className="icon icon-play" type="button" aria-label="Play" onClick={this.timer.start}>
+            ▶
+          </button>
+          <button className="icon icon-pause" type="button" aria-label="Pause" onClick={this.timer.stop}>
+            ⏸
+          </button>
+          <span className="timer--elapsed-time">{this.formatTime(workTime)}</span>
+        </span>
+      );
+    } else {
+      timer = (
+        <span className="timer">
+          <button className="icon icon-play" type="button" aria-label="Play" onClick={() => {}}>
+            ▶
+          </button>
+          <button className="icon icon-pause" type="button" aria-label="Pause" onClick={() => {}}>
+            ⏸
+          </button>
+          <span className="timer--elapsed-time">{this.formatTime(workTime)}</span>
+        </span>
+      );
+    }
 
     return (
       <div className="view">
-        <input className="toggle" type="checkbox" checked={this.props.completed} onChange={this.onCheck} />
+        <input className="toggle" type="checkbox" checked={completed} onChange={this.onCheck} />
         <label>
           <span className="description">{description}</span>
-          <span className="timer">
-            <button className="icon icon-play" type="button" aria-label="Play" onClick={this.timer.start}>
-              ▶
-            </button>
-            <button className="icon icon-pause" type="button" aria-label="Pause" onClick={this.timer.stop}>
-              ⏸
-            </button>
-            <span className="timer--elapsed-time">{workTime}</span>
-          </span>
+          {timer}
           <span className="created">{`${formatDistanceToNow(
             new Date(this.state.createTime),
             'MM/dd/yyyy'
