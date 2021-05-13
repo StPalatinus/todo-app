@@ -17,6 +17,7 @@
     "jest": true
   },
   "rules": {
+    "react/no-this-in-sfc": ["war"],
     "curly": ["error"],
     "max-depth": ["warn", 4],
     "id-length": ["warn", { "exceptions": ["i", "j"], "min": 2 }],
