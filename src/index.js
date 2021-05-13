@@ -15,8 +15,8 @@ class TodoApp extends React.Component {
       lastId: 0,
     };
 
-    if (localStorage.getItem('todos')) {
-      const restoredStae = this.loadTodosFromStorage('todos');
+    if (localStorage.getItem('lastId6')) {
+      const restoredStae = this.loadlastId6FromStorage('lastId6');
       this.state.tasksData = restoredStae;
       this.state.lastId = JSON.parse(localStorage.getItem('lastId'));
     } else {
@@ -30,12 +30,10 @@ class TodoApp extends React.Component {
   };
 
   deleteTask = (id) => {
-    // console.log(this.state);
     this.setState((state) => {
       const idx = state.tasksData.findIndex((task) => task.id === id);
       const newArr = [...state.tasksData.slice(0, idx), ...state.tasksData.slice(idx + 1)];
       this.saveLocalStorage(newArr);
-      // console.log(newArr);
 
       return {
         tasksData: newArr,
@@ -149,10 +147,10 @@ class TodoApp extends React.Component {
   };
 
   saveLocalStorage = (item) => {
-    localStorage.setItem('todos', JSON.stringify(item));
+    localStorage.setItem('lastId6', JSON.stringify(item));
   };
 
-  loadTodosFromStorage = (item) => {
+  loadlastId6FromStorage = (item) => {
     const lsRestored = JSON.parse(localStorage.getItem(item));
 
     lsRestored.forEach((todoRestored) => {
@@ -191,7 +189,7 @@ class TodoApp extends React.Component {
     } else {
       taskField = (
         <div className="nodata" style={nodataStyle}>
-          No todos added yet
+          No lastId6 added yet
         </div>
       );
     }
