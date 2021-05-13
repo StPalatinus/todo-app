@@ -15,8 +15,8 @@ class TodoApp extends React.Component {
       lastId: 0,
     };
 
-    if (localStorage.getItem('lastId6')) {
-      const restoredStae = this.loadlastId6FromStorage('lastId6');
+    if (localStorage.getItem('todos')) {
+      const restoredStae = this.loadtodosFromStorage('todos');
       this.state.tasksData = restoredStae;
       this.state.lastId = JSON.parse(localStorage.getItem('lastId'));
     } else {
@@ -147,10 +147,11 @@ class TodoApp extends React.Component {
   };
 
   saveLocalStorage = (item) => {
-    localStorage.setItem('lastId6', JSON.stringify(item));
+    localStorage.clear('todos');
+    localStorage.setItem('todos', JSON.stringify(item));
   };
 
-  loadlastId6FromStorage = (item) => {
+  loadtodosFromStorage = (item) => {
     const lsRestored = JSON.parse(localStorage.getItem(item));
 
     lsRestored.forEach((todoRestored) => {
@@ -189,7 +190,7 @@ class TodoApp extends React.Component {
     } else {
       taskField = (
         <div className="nodata" style={nodataStyle}>
-          No lastId6 added yet
+          No todos added yet
         </div>
       );
     }
