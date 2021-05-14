@@ -1,13 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import formatDistanceToNow from 'date-fns/formatDistanceToNow';
-// import toDate from 'date-fns/toDate'
 import './task-field.css';
 
 const TaskField = (props) => {
-  // constructor(props) {
-  //   super(props);
-
   const { created, onTimerTick, workTime: propsWorkTime, description, completed } = props;
 
   TaskField.defaultProps = {
@@ -19,71 +15,27 @@ const TaskField = (props) => {
     workTime: 0,
   };
 
-  // this.state = {
-  //   createTime: created,
-  //   workTime,
-  //   tickCount: 0,
-  // };
-
   const [createTime] = useState(created);
   const [workTime, setWorkTime] = useState(propsWorkTime);
-  const [tickCount, setTickCount] = useState(0);
+  // const [tickCount, setTickCount] = useState(0);
   const [workTimerID, setworkTimerID] = useState(null);
+  const [timerPlay, settimerPlay] = useState(false);
 
-  // let workTimerID = workTime;
-
-  // const timer = {
-  //   workTimerID: null,
-  //   start: () => {
-  //    clearInterval(workTimerID);
-
-  //     setworkTimerID(setInterval(() => {
-  //       console.log(workTime);
-  //       console.log(props);
-  //       const newTime = workTime + 1;
-  //       onTimerTick(workTime);
-
-  //       setWorkTime(newTime);
-  //       console.log(newTime);
-  //     }, 1000));
-  //   },
-  //   stop: () => {
-  //     clearInterval(workTimerID);
-  //   },
-  // };
-
-  // const timer = {
-  //   // workTimerID: null, // workTime
-  //   start: () => {
-  //     console.log(workTimerID);
-  //     clearInterval(workTimerID);
-  //     const workTimerIDSave = setInterval(() => {
-  //       onTimerTick(workTime);
-  //         const newTime = workTime + 1;
-
-  //         setWorkTime(newTime);
-
-  //     }, 1000);
-  //     setworkTimerID(workTimerIDSave);
-  //     console.log(workTimerIDSave);
-  //   },
-  //   stop: () => {
-  //     clearInterval(workTimerID);
-  //   },
-  // };
-
-  // workTimerID: null, // workTime
   const timerStart = () => {
     clearInterval(workTimerID);
-    const workTimerIDSave = setInterval(() => {
-      onTimerTick(workTime);
-      setWorkTime((timerTime) => timerTime + 1);
-    }, 1000);
-    setworkTimerID(workTimerIDSave);
+    settimerPlay(true);
+    // const nweWorkTimerID = setInterval(() => {
+    //   onTimerTick(workTime);
+    //   setWorkTime((timerTime) => timerTime + 1);
+    //   console.log(workTime);
+    // }, 1000);
+    // settimerPlay(true);
+    // setworkTimerID(workTimerID);
   };
 
   const timerStop = () => {
     clearInterval(workTimerID);
+    settimerPlay(false);
   };
 
   const onCheck = () => {
@@ -91,9 +43,15 @@ const TaskField = (props) => {
     timerStop();
   };
 
-  // const onTaskFieldFocus = () => {
-  //   props.onEdit();
-  // };
+  const onTaskFieldFocus = () => {
+    props.onEdit();
+    timerStop();
+  };
+
+  const deleteTask = () => {
+    props.onDelete();
+    timerStop();
+  };
 
   const formatTime = (timeInSeconds) => {
     const hours = Math.floor(timeInSeconds / 60 / 60);
@@ -101,14 +59,10 @@ const TaskField = (props) => {
     const seconds = timeInSeconds - minutes * 60 - hours * 60 * 60;
     return `${hours}:${minutes}:${seconds}`;
   };
-  // }
-
-  // componentDidMount() {
-  //   this.taskStartTimerID = setInterval(() => this.tick(), 30000);
 
   const tick = () => {
-    const newTick = tickCount + 1;
-    setTickCount(newTick + 1);
+    // const newTick = tickCount + 1;
+    // setTickCount(newTick + 1);
   };
 
   useEffect(() => {
@@ -119,18 +73,23 @@ const TaskField = (props) => {
     };
   }, []);
 
-  // componentWillUnmount() {
-  //   clearInterval(taskStartTimerID);
-  //   this.timer.stop();
-  // }
+  useEffect(() => {
+    if (timerPlay) {
+      const nweWorkTimerID = setInterval(() => {
+        onTimerTick(workTime);
+        setWorkTime(() => workTime + 1);
+        console.log(workTime);
+      }, 1000);
+      setworkTimerID(nweWorkTimerID);
+    }
 
-  // tick() {
-  //   this.setState(() => ({}));
-  // }
+    // clearing interval
+    return () => {
+      clearInterval(workTimerID);
+      settimerPlay(false);
+    };
+  }, [timerPlay]);
 
-  // render() {
-  // const { description, completed } = this.props;
-  // const { workTime } = this.state;
   let timerComponent;
 
   if (!completed) {
@@ -167,8 +126,8 @@ const TaskField = (props) => {
         {timerComponent}
         <span className="created">{`${formatDistanceToNow(new Date(createTime), 'MM/dd/yyyy')}  ago`}</span>
       </label>
-      <button className="icon icon-edit" onClick={props.onEdit} type="button" aria-label="Edit" />
-      <button className="icon icon-destroy" onClick={props.onDelete} type="button" aria-label="Remove" />
+      <button className="icon icon-edit" onClick={onTaskFieldFocus} type="button" aria-label="Edit" />
+      <button className="icon icon-destroy" onClick={deleteTask} type="button" aria-label="Remove" />
     </div>
   );
   // }
