@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useReducer } from 'react';
 import PropTypes from 'prop-types';
 import formatDistanceToNow from 'date-fns/formatDistanceToNow';
 import './task-field.css';
@@ -16,15 +16,22 @@ const TaskField = (props) => {
   };
 
   const [createTime] = useState(created);
-  const [workTime, setWorkTime] = useState(propsWorkTime);
   // const [tickCount, setTickCount] = useState(0);
   const [workTimerID, setworkTimerID] = useState(null);
   const [timerPlay, settimerPlay] = useState(false);
+  // const [workTime, setWorkTime] = useState(propsWorkTime);
+  const [workTime, setWorkTime] = useReducer((state, isTimerPlay) => {
+    console.log(isTimerPlay);
+    if (isTimerPlay) {
+      return state + 1;
+    }
+    return null;
+  }, propsWorkTime);
 
   const timerStart = () => {
     clearInterval(workTimerID);
     settimerPlay(true);
-    // const nweWorkTimerID = setInterval(() => {
+    // const newWorkTimerID = setInterval(() => {
     //   onTimerTick(workTime);
     //   setWorkTime((timerTime) => timerTime + 1);
     //   console.log(workTime);
@@ -75,20 +82,22 @@ const TaskField = (props) => {
 
   useEffect(() => {
     if (timerPlay) {
-      const nweWorkTimerID = setInterval(() => {
+      const newWorkTimerID = setInterval(() => {
+        // const newTime = (timertime) =>  timertime + 1;
+        // setWorkTime((state, timerTime) => ({ ...state, workTime: timerTime + 1 }));
+        setWorkTime((timerTime) => timerTime + 1);
         onTimerTick(workTime);
-        setWorkTime(() => workTime + 1);
         console.log(workTime);
       }, 1000);
-      setworkTimerID(nweWorkTimerID);
+      setworkTimerID(newWorkTimerID);
     }
 
-    // clearing interval
     return () => {
       clearInterval(workTimerID);
       settimerPlay(false);
     };
   }, [timerPlay]);
+  // }, [ timerPlay, workTime ]);
 
   let timerComponent;
 
@@ -130,7 +139,6 @@ const TaskField = (props) => {
       <button className="icon icon-destroy" onClick={deleteTask} type="button" aria-label="Remove" />
     </div>
   );
-  // }
 };
 
 TaskField.propTypes = {
