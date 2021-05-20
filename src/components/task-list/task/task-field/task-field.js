@@ -21,8 +21,9 @@ const TaskField = (props) => {
   const [timerPlay, settimerPlay] = useState(false);
   // const [workTime, setWorkTime] = useState(propsWorkTime);
   const [workTime, setWorkTime] = useReducer((state, isTimerPlay) => {
-    console.log(isTimerPlay);
+    console.log(state);
     if (isTimerPlay) {
+      onTimerTick(state + 1);
       return state + 1;
     }
     return null;
@@ -83,10 +84,7 @@ const TaskField = (props) => {
   useEffect(() => {
     if (timerPlay) {
       const newWorkTimerID = setInterval(() => {
-        // const newTime = (timertime) =>  timertime + 1;
-        // setWorkTime((state, timerTime) => ({ ...state, workTime: timerTime + 1 }));
-        setWorkTime((timerTime) => timerTime + 1);
-        onTimerTick(workTime);
+        setWorkTime(workTime + 1);
         console.log(workTime);
       }, 1000);
       setworkTimerID(newWorkTimerID);
