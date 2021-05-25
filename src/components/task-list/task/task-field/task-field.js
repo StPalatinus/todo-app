@@ -1,10 +1,11 @@
-import React, { useState, useEffect, useReducer } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import formatDistanceToNow from 'date-fns/formatDistanceToNow';
 import './task-field.css';
 
 const TaskField = (props) => {
   const { created, onTimerTick, workTime: propsWorkTime, description, completed } = props;
+  const timerRef = useRef(null);
 
   TaskField.defaultProps = {
     description: 'Default task',
@@ -16,23 +17,17 @@ const TaskField = (props) => {
   };
 
   const [createTime] = useState(created);
-  const [workTimerID, setworkTimerID] = useState(null);
+  const workTimerID = useRef(null);
   const [timerPlay, settimerPlay] = useState(false);
-  const [workTime, setWorkTime] = useReducer((state, isTimerPlay) => {
-    if (isTimerPlay) {
-      onTimerTick(state + 1);
-      return state + 1;
-    }
-    return state;
-  }, propsWorkTime);
+  const [workTime, setWorkTime] = useState(propsWorkTime);
 
   const timerStart = () => {
-    clearInterval(workTimerID);
+    clearInterval(workTimerID.current);
     settimerPlay(true);
   };
 
   const timerStop = () => {
-    clearInterval(workTimerID);
+    clearInterval(workTimerID.current);
     settimerPlay(false);
   };
 
@@ -64,23 +59,21 @@ const TaskField = (props) => {
     const taskStartTimerID = setInterval(() => tick(), 30000);
     return () => {
       clearInterval(taskStartTimerID);
-      // timerStop();
     };
   }, []);
 
   useEffect(() => {
     if (timerPlay) {
-      const newWorkTimerID = setInterval(() => {
-        setWorkTime(workTime + 1);
+      workTimerID.current = setInterval(() => {
+        setWorkTime((timerTime) => timerTime + 1);
+        onTimerTick(workTime + 1);
       }, 1000);
-      setworkTimerID(newWorkTimerID);
     }
 
     return () => {
-      clearInterval(workTimerID);
-      settimerPlay(false);
+      clearInterval(workTimerID.current);
     };
-  }, [timerPlay, settimerPlay]);
+  });
 
   let timerComponent;
 
@@ -105,7 +98,9 @@ const TaskField = (props) => {
         <button className="icon icon-pause" type="button" aria-label="Pause" onClick={() => {}}>
           ⏸
         </button>
-        <span className="timer--elapsed-time">{formatTime(workTime)}</span>
+        <span className="timer--elapsed-time" ref={timerRef}>
+          {formatTime(workTime)}
+        </span>
       </span>
     );
   }

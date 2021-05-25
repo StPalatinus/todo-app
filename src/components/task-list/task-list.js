@@ -5,55 +5,41 @@ import Task from './task';
 import './task-list.css';
 import filterOptions from '../../assets/filter-options';
 
-class TaskList extends React.Component {
-  constructor(props) {
-    super(props);
+const TaskList = (props) => {
+  TaskList.defaultProps = {
+    filterState: filterOptions.displayActive,
+  };
 
-    TaskList.defaultProps = {
-      filterState: filterOptions.displayActive,
-    };
-  }
+  const { tasksList, onDelete, onEdit, taskCompleteStateToggle, filterState, onTaskChange, saveTimerData } = props;
 
-  render() {
-    const {
-      tasksList,
-      onDelete,
-      onEdit,
-      taskCompleteStateToggle,
-      filterState,
-      onTaskChange,
-      saveTimerData,
-    } = this.props;
-
-    const tasks = tasksList.map((taskProps) => {
-      const classList = classNames({
-        completed: taskProps.completed,
-      });
-
-      if (filterState === filterOptions.displayActive && taskProps.completed) {
-        return null;
-      }
-      if (filterState === filterOptions.displayCompleted && !taskProps.completed) {
-        return null;
-      }
-
-      return (
-        <li className={classList} key={taskProps.id}>
-          <Task
-            {...taskProps}
-            onDelete={() => onDelete(taskProps.id)}
-            onEdit={() => onEdit(taskProps.id)}
-            ontaskCompleteStateToggle={() => taskCompleteStateToggle(taskProps.id)}
-            onTaskChange={onTaskChange}
-            saveTimerData={saveTimerData}
-          />
-        </li>
-      );
+  const tasks = tasksList.map((taskProps) => {
+    const classList = classNames({
+      completed: taskProps.completed,
     });
 
-    return <ul className="todo-list">{tasks}</ul>;
-  }
-}
+    if (filterState === filterOptions.displayActive && taskProps.completed) {
+      return null;
+    }
+    if (filterState === filterOptions.displayCompleted && !taskProps.completed) {
+      return null;
+    }
+
+    return (
+      <li className={classList} key={taskProps.id}>
+        <Task
+          {...taskProps}
+          onDelete={() => onDelete(taskProps.id)}
+          onEdit={() => onEdit(taskProps.id)}
+          ontaskCompleteStateToggle={() => taskCompleteStateToggle(taskProps.id)}
+          onTaskChange={onTaskChange}
+          saveTimerData={saveTimerData}
+        />
+      </li>
+    );
+  });
+
+  return <ul className="todo-list">{tasks}</ul>;
+};
 
 TaskList.propTypes = {
   tasksList: PropTypes.arrayOf(

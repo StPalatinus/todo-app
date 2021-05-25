@@ -147,7 +147,6 @@ class TodoApp extends React.Component {
   };
 
   saveLocalStorage = (item) => {
-    localStorage.clear('todos');
     localStorage.setItem('todos', JSON.stringify(item));
   };
 

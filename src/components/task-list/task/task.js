@@ -4,53 +4,43 @@ import NewTaskForm from './new-task-form';
 import './task.css';
 import TaskField from './task-field';
 
-class Task extends React.Component {
-  constructor(props) {
-    super(props);
+const Task = (props) => {
+  const { id, saveTimerData } = props;
 
-    const { id, saveTimerData } = this.props;
-
-    Task.defaultProps = {
-      description: 'Default task',
-      editStatus: false,
-      completed: false,
-      id: () => Math.floor(Math.random() * 1000000),
-      onDelete: () => {},
-      onEdit: () => {},
-      onTaskChange: {},
-      onTaskStateChange: () => {},
-    };
-
-    this.assignTimerToId = (timeElapsed) => {
-      saveTimerData(timeElapsed, id);
-    };
-  }
-
-  focusTaskInput = () => {
-    if (this.taskInput) this.taskInput.focus();
+  Task.defaultProps = {
+    description: 'Default task',
+    editStatus: false,
+    completed: false,
+    id: () => Math.floor(Math.random() * 1000000),
+    onDelete: () => {},
+    onEdit: () => {},
+    onTaskChange: {},
+    onTaskStateChange: () => {},
   };
 
-  render() {
-    const { description, editStatus, onTaskChange, id, onDelete } = this.props;
-    let newTaskFieldOrForm;
+  const assignTimerToId = (timeElapsed) => {
+    saveTimerData(timeElapsed, id);
+  };
 
-    if (editStatus) {
-      newTaskFieldOrForm = (
-        <NewTaskForm
-          editStatus={editStatus}
-          description={description}
-          onTaskChange={onTaskChange}
-          id={id}
-          deleteEmptyTask={onDelete}
-        />
-      );
-    } else {
-      newTaskFieldOrForm = <TaskField {...this.props} id={id} onDelete={onDelete} onTimerTick={this.assignTimerToId} />;
-    }
+  const { description, editStatus, onTaskChange, onDelete } = props;
+  let newTaskFieldOrForm;
 
-    return <div>{newTaskFieldOrForm}</div>;
+  if (editStatus) {
+    newTaskFieldOrForm = (
+      <NewTaskForm
+        editStatus={editStatus}
+        description={description}
+        onTaskChange={onTaskChange}
+        id={id}
+        deleteEmptyTask={onDelete}
+      />
+    );
+  } else {
+    newTaskFieldOrForm = <TaskField {...props} id={id} onDelete={onDelete} onTimerTick={assignTimerToId} />;
   }
-}
+
+  return <div>{newTaskFieldOrForm}</div>;
+};
 
 Task.propTypes = {
   description: PropTypes.string,
