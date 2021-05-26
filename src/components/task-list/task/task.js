@@ -5,7 +5,7 @@ import './task.css';
 import TaskField from './task-field';
 
 const Task = (props) => {
-  const { id, saveTimerData } = props;
+  const { id, saveTimerData, description, editStatus, onTaskChange, onDelete } = props;
 
   Task.defaultProps = {
     description: 'Default task',
@@ -22,7 +22,7 @@ const Task = (props) => {
     saveTimerData(timeElapsed, id);
   };
 
-  const { description, editStatus, onTaskChange, onDelete } = props;
+  // const { description, editStatus, onTaskChange, onDelete } = props;
   let newTaskFieldOrForm;
 
   if (editStatus) {
