@@ -223,8 +223,6 @@ const TodoApp = () => {
     );
   }
 
-  console.log(state);
-
   return (
     <section className="todoapp">
       <Header onTaskAdd={addNewTask} />
