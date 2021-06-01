@@ -15,11 +15,10 @@ const Header = (props) => {
   const onSubmit = (evt) => {
     evt.preventDefault();
     if (newTaskValue === '') {
-      return false;
+      return;
     }
     onTaskAdd(newTaskValue);
     setNewTaskValue('');
-    return true;
   };
 
   return (

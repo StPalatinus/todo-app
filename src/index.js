@@ -1,15 +1,17 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { v4 as uuidv4 } from 'uuid';
 import Header from './components/header';
 import TaskList from './components/task-list';
 import Footer from './components/footer';
 import './index.css';
+import filterOptions from './assets/filter-options';
 
 const TodoApp = () => {
   const [state, setState] = React.useState({
     tasksData: [],
-    filterState: 'All',
-    lastId: 0,
+    filterState: filterOptions.displayAll,
+    usedIdsArr: [],
   });
 
   const loadtodosFromStorage = (item) => {
@@ -21,8 +23,12 @@ const TodoApp = () => {
     return lsRestored;
   };
 
-  const saveLocalStorage = (item) => {
+  const saveTodosToStorage = (item) => {
     localStorage.setItem('todos', JSON.stringify(item));
+  };
+
+  const saveUsedIdsArrToStorage = (adsArr) => {
+    localStorage.setItem('usedIdsArr', JSON.stringify(adsArr));
   };
 
   React.useEffect(() => {
@@ -35,12 +41,12 @@ const TodoApp = () => {
       }));
       setState((prevState) => ({
         ...prevState,
-        lastId: JSON.parse(localStorage.getItem('lastId')),
+        usedIdsArr: JSON.parse(localStorage.getItem('usedIdsArr')),
       }));
     } else {
       setState((prevState) => ({
         ...prevState,
-        lastId: 0,
+        usedIdsArr: [],
       }));
     }
   }, []);
@@ -53,12 +59,17 @@ const TodoApp = () => {
   const deleteTask = (id) => {
     setState((prevState) => {
       const idx = prevState.tasksData.findIndex((task) => task.id === id);
+      const idInArr = prevState.tasksData.findIndex((arrId) => arrId.id === id);
       const newArr = [...prevState.tasksData.slice(0, idx), ...prevState.tasksData.slice(idx + 1)];
-      saveLocalStorage(newArr);
+      const newUsedIdsArr = [...prevState.usedIdsArr.slice(0, idInArr), ...prevState.usedIdsArr.slice(idInArr + 1)];
+
+      saveTodosToStorage(newArr);
+      saveUsedIdsArrToStorage(newUsedIdsArr);
 
       return {
         ...prevState,
         tasksData: newArr,
+        usedIdsArr: newUsedIdsArr,
       };
     });
   };
@@ -74,7 +85,7 @@ const TodoApp = () => {
         ...newStateChangedTask,
         ...prevState.tasksData.slice(idx + 1),
       ];
-      saveLocalStorage(newArr);
+      saveTodosToStorage(newArr);
 
       return {
         ...prevState,
@@ -93,7 +104,7 @@ const TodoApp = () => {
         ...newStateChangedTask,
         ...prevState.tasksData.slice(idx + 1),
       ];
-      saveLocalStorage(newArr);
+      saveTodosToStorage(newArr);
 
       return {
         ...prevState,
@@ -102,23 +113,40 @@ const TodoApp = () => {
     });
   };
 
+  const generateId = () => {
+    const nextId = uuidv4();
+
+    return nextId;
+  };
+
   const addNewTask = (text) => {
-    localStorage.setItem('lastId', JSON.stringify(state.lastId + 1));
     setState((prevState) => {
+      let nextId = generateId();
+      /* eslint no-loop-func: "off" */
+      while (prevState.usedIdsArr.find((id) => id === nextId)) {
+        nextId = generateId();
+      }
+
+      const oldIdsArr = prevState.usedIdsArr.map((id) => id);
+      const newIdsArr = [...oldIdsArr, nextId];
+
+      saveUsedIdsArrToStorage(newIdsArr);
+
       const newTaskObj = {
         description: text,
         created: new Date(),
         editStatus: false,
         completed: false,
-        id: (prevState.lastId += 1),
+        id: nextId,
         workTime: 0,
       };
       const newArr = [...prevState.tasksData, newTaskObj];
-      saveLocalStorage(newArr);
+      saveTodosToStorage(newArr);
 
       return {
         ...prevState,
         tasksData: newArr,
+        usedIdsArr: newIdsArr,
       };
     });
   };
@@ -147,7 +175,7 @@ const TodoApp = () => {
         ...newStateChangedTask,
         ...prevState.tasksData.slice(idx + 1),
       ];
-      saveLocalStorage(newArr);
+      saveTodosToStorage(newArr);
 
       return {
         ...prevState,
@@ -182,7 +210,7 @@ const TodoApp = () => {
         ...newStateChangedTask,
         ...prevState.tasksData.slice(idx + 1),
       ];
-      saveLocalStorage(newArr);
+      saveTodosToStorage(newArr);
 
       return {
         ...prevState,
@@ -191,7 +219,6 @@ const TodoApp = () => {
     });
   };
 
-  let taskField;
   const nodataStyle = {
     color: 'gray',
     fontSize: '24px',
@@ -202,32 +229,37 @@ const TodoApp = () => {
     paddingLeft: '60px',
   };
 
-  if (state.tasksData.length > 0) {
-    taskField = (
-      <TaskList
-        tasksList={state.tasksData}
-        filterState={state.filterState}
-        onDelete={deleteTask}
-        onEdit={editTask}
-        taskCompleteStateToggle={taskCompleteStateToggle}
-        onTaskChange={changeTask}
-        saveTimerData={saveTimerData}
-        workTime={state.workTime}
-      />
-    );
-  } else {
-    taskField = (
-      <div className="nodata" style={nodataStyle}>
-        No todos added yet
-      </div>
-    );
-  }
+  const renderTaskfield = () => {
+    let taskField;
+
+    if (state.tasksData.length > 0) {
+      taskField = (
+        <TaskList
+          tasksList={state.tasksData}
+          filterState={state.filterState}
+          onDelete={deleteTask}
+          onEdit={editTask}
+          taskCompleteStateToggle={taskCompleteStateToggle}
+          onTaskChange={changeTask}
+          saveTimerData={saveTimerData}
+          workTime={state.workTime}
+        />
+      );
+    } else {
+      taskField = (
+        <div className="nodata" style={nodataStyle}>
+          No todos added yet
+        </div>
+      );
+    }
+    return taskField;
+  };
 
   return (
     <section className="todoapp">
       <Header onTaskAdd={addNewTask} />
       <section className="main">
-        {taskField}
+        {renderTaskfield()}
         <Footer
           countUnfinished={countUnfinished}
           changeFilterState={changeFilterState}

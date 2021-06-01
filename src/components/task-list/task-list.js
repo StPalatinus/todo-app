@@ -18,10 +18,10 @@ const TaskList = (props) => {
     });
 
     if (filterState === filterOptions.displayActive && taskProps.completed) {
-      return null;
+      return;
     }
     if (filterState === filterOptions.displayCompleted && !taskProps.completed) {
-      return null;
+      return;
     }
 
     return (

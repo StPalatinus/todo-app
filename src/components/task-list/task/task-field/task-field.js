@@ -33,12 +33,11 @@ const TaskField = (props) => {
 
   const onCheck = () => {
     props.ontaskCompleteStateToggle();
-    // timerStop();
+    timerStop();
   };
 
   const onTaskFieldFocus = () => {
     props.onEdit();
-    // timerStop();
   };
 
   const deleteTask = () => {

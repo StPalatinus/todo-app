@@ -45,7 +45,7 @@ const Task = (props) => {
 Task.propTypes = {
   description: PropTypes.string,
   editStatus: PropTypes.bool,
-  id: PropTypes.number,
+  id: PropTypes.string,
   created: PropTypes.instanceOf(Date).isRequired,
   onDelete: PropTypes.func,
   onEdit: PropTypes.func,

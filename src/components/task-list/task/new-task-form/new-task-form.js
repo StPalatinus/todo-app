@@ -40,7 +40,7 @@ const NewTaskForm = (props) => {
 NewTaskForm.propTypes = {
   description: PropTypes.string.isRequired,
   onTaskChange: PropTypes.func.isRequired,
-  id: PropTypes.number.isRequired,
+  id: PropTypes.string.isRequired,
   deleteEmptyTask: PropTypes.func,
 };
 
