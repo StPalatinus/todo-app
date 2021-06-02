@@ -251,10 +251,9 @@ body {
   text-decoration: line-through;
 }
 
-.todo-list li .icon {
+.icon {
   position: absolute;
   top: 0;
-  bottom: -3px;
   width: 30px;
   height: 40px;
   font-size: 34px;
@@ -264,24 +263,26 @@ body {
   cursor: pointer;
 }
 
-.todo-list li .icon:hover {
+.icon:hover {
   color: #af5b5e;
 }
 
-.todo-list li .icon-destroy {
+.icon-destroy {
   right: 10px;
+  bottom: -4px;
 }
 
-.todo-list li .icon-destroy:after {
+.icon-destroy:after {
   content: '×';
 }
 
-.todo-list li .icon-edit {
+.icon-edit {
   font-size: 19px;
   right: 45px;
+  bottom: -3px;
 }
 
-.todo-list li .icon-edit:after {
+.icon-edit:after {
   content: '✎';
 }
 

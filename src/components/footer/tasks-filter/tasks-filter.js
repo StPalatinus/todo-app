@@ -1,19 +1,14 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import './tasks-filter.css';
 import filterOptions from '../../../assets/filter-options';
 
-class TasksFilter extends React.Component {
-  constructor(props) {
-    super(props);
+const TasksFilter = (props) => {
+  const [show, setShow] = useState(filterOptions.displayAll);
 
-    this.state = {
-      show: filterOptions.displayAll,
-    };
-  }
+  const { onFilterCnahge } = props;
 
-  onViewCnahge = (evt) => {
-    const { onFilterCnahge } = this.props;
+  const onViewCnahge = (evt) => {
     const clickedButton = evt.target;
     const filterButtons = evt.currentTarget.parentElement.parentElement.childNodes;
 
@@ -21,14 +16,7 @@ class TasksFilter extends React.Component {
       if (button.firstChild === clickedButton) {
         if (!clickedButton.classList.contains('selected')) {
           clickedButton.classList.add('selected');
-          this.setState(
-            {
-              show: evt.target.textContent,
-            },
-            () => {
-              onFilterCnahge(this.state.show);
-            }
-          );
+          setShow(evt.target.textContent);
         }
       } else if (button.firstChild.classList.contains('selected')) {
         button.firstChild.classList.remove('selected');
@@ -36,28 +24,30 @@ class TasksFilter extends React.Component {
     });
   };
 
-  render() {
-    return (
-      <ul className="filters">
-        <li>
-          <button className="selected" type="button" onClick={this.onViewCnahge} onKeyPress={this.onViewCnahge}>
-            All
-          </button>
-        </li>
-        <li>
-          <button type="button" onClick={this.onViewCnahge} onKeyPress={this.onViewCnahge}>
-            Active
-          </button>
-        </li>
-        <li>
-          <button type="button" onClick={this.onViewCnahge} onKeyPress={this.onViewCnahge}>
-            Completed
-          </button>
-        </li>
-      </ul>
-    );
-  }
-}
+  useEffect(() => {
+    onFilterCnahge(show);
+  }, [show]);
+
+  return (
+    <ul className="filters">
+      <li>
+        <button className="selected" type="button" onClick={onViewCnahge} onKeyPress={onViewCnahge}>
+          All
+        </button>
+      </li>
+      <li>
+        <button type="button" onClick={onViewCnahge} onKeyPress={onViewCnahge}>
+          Active
+        </button>
+      </li>
+      <li>
+        <button type="button" onClick={onViewCnahge} onKeyPress={onViewCnahge}>
+          Completed
+        </button>
+      </li>
+    </ul>
+  );
+};
 
 TasksFilter.propTypes = {
   onFilterCnahge: PropTypes.func.isRequired,

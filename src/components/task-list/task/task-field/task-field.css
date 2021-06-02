@@ -1,1 +1,33 @@
-﻿
+﻿.todo-list li .icon-pause,
+.todo-list li .icon-play {
+    font-size: 18px;
+	width: 18px;
+	height: 18px;
+}
+
+.todo-list li .icon-play {
+	font-size: 15px;
+    left:10px;
+    bottom: -7px;
+}
+
+.todo-list li .icon-pause {
+	font-size: 15px;
+    left: 28px;
+}
+
+/* .icon-pause:after {
+	content: '⏸';
+}
+
+.icon-play:after {
+	content: '▶';
+} */
+
+.timer {
+    position: relative;
+	font-size: 13px;
+    text-align: right;
+	color: gray;
+    min-width: 100px;
+}

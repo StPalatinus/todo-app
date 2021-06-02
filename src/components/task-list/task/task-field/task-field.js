@@ -1,66 +1,122 @@
-import React from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import formatDistanceToNow from 'date-fns/formatDistanceToNow';
 import './task-field.css';
 
-class TaskField extends React.Component {
-  constructor(props) {
-    super(props);
+const TaskField = (props) => {
+  const { created, onTimerTick, workTime: propsWorkTime, description, completed } = props;
+  const timerRef = useRef(null);
 
-    const { created } = this.props;
+  TaskField.defaultProps = {
+    description: 'Default task',
+    completed: false,
+    onDelete: () => {},
+    onEdit: () => {},
+    ontaskCompleteStateToggle: () => {},
+    workTime: 0,
+  };
 
-    TaskField.defaultProps = {
-      description: 'Default task',
-      completed: false,
-      onDelete: () => {},
-      onEdit: () => {},
-      ontaskCompleteStateToggle: () => {},
+  const [createTime] = useState(created);
+  const workTimerID = useRef(null);
+  const [timerPlay, settimerPlay] = useState(false);
+  const [workTime, setWorkTime] = useState(propsWorkTime);
+
+  const timerStart = () => {
+    clearInterval(workTimerID.current);
+    settimerPlay(true);
+  };
+
+  const timerStop = () => {
+    clearInterval(workTimerID.current);
+    settimerPlay(false);
+  };
+
+  const onCheck = () => {
+    props.ontaskCompleteStateToggle();
+    timerStop();
+  };
+
+  const onTaskFieldFocus = () => {
+    props.onEdit();
+  };
+
+  const deleteTask = () => {
+    props.onDelete();
+    timerStop();
+  };
+
+  const formatTime = (timeInSeconds) => {
+    const hours = Math.floor(timeInSeconds / 60 / 60);
+    const minutes = Math.floor(timeInSeconds / 60);
+    const seconds = timeInSeconds - minutes * 60 - hours * 60 * 60;
+    return `${hours}:${minutes}:${seconds}`;
+  };
+
+  const tick = () => {};
+
+  useEffect(() => {
+    const taskStartTimerID = setInterval(() => tick(), 30000);
+    return () => {
+      clearInterval(taskStartTimerID);
     };
+  }, []);
 
-    this.state = {
-      createTime: created,
+  useEffect(() => {
+    if (timerPlay) {
+      workTimerID.current = setInterval(() => {
+        setWorkTime((timerTime) => timerTime + 1);
+        onTimerTick(workTime + 1);
+      }, 1000);
+    }
+
+    return () => {
+      clearInterval(workTimerID.current);
     };
+  });
 
-    this.onCheck = () => {
-      this.props.ontaskCompleteStateToggle();
-    };
+  let timerComponent;
 
-    this.onTaskFieldFocus = () => {
-      this.props.onEdit();
-    };
-  }
-
-  componentDidMount() {
-    this.timerID = setInterval(() => this.tick(), 30000);
-  }
-
-  componentWillUnmount() {
-    clearInterval(this.timerID);
-  }
-
-  tick() {
-    this.setState(() => ({}));
-  }
-
-  render() {
-    const { description } = this.props;
-
-    return (
-      <div className="view">
-        <input className="toggle" type="checkbox" checked={this.props.completed} onChange={this.onCheck} />
-        <label>
-          <span className="description">{description}</span>
-          <span className="created">{`${formatDistanceToNow(
-            new Date(this.state.createTime),
-            'MM/dd/yyyy'
-          )}  ago`}</span>
-        </label>
-        <button className="icon icon-edit" onClick={this.props.onEdit} type="button" aria-label="Edit" />
-        <button className="icon icon-destroy" onClick={this.props.onDelete} type="button" aria-label="Remove" />
-      </div>
+  if (!completed) {
+    timerComponent = (
+      <span className="timer">
+        <button className="icon icon-play" type="button" aria-label="Play" onClick={timerStart}>
+          ▶
+        </button>
+        <button className="icon icon-pause" type="button" aria-label="Pause" onClick={timerStop}>
+          ⏸
+        </button>
+        <span className="timer--elapsed-time">{formatTime(workTime)}</span>
+      </span>
+    );
+  } else {
+    timerComponent = (
+      <span className="timer">
+        <button className="icon icon-play" type="button" aria-label="Play" onClick={() => {}}>
+          ▶
+        </button>
+        <button className="icon icon-pause" type="button" aria-label="Pause" onClick={() => {}}>
+          ⏸
+        </button>
+        <span className="timer--elapsed-time" ref={timerRef}>
+          {formatTime(workTime)}
+        </span>
+      </span>
     );
   }
-}
+
+  return (
+    <div className="view">
+      <input className="toggle" type="checkbox" checked={completed} onChange={onCheck} />
+      <label>
+        <span className="description">{description}</span>
+        {timerComponent}
+        <span className="created">{`${formatDistanceToNow(new Date(createTime), 'MM/dd/yyyy')}  ago`}</span>
+      </label>
+      <button className="icon icon-edit" onClick={onTaskFieldFocus} type="button" aria-label="Edit" />
+      <button className="icon icon-destroy" onClick={deleteTask} type="button" aria-label="Remove" />
+    </div>
+  );
+};
 
 TaskField.propTypes = {
   completed: PropTypes.bool,
@@ -69,6 +125,8 @@ TaskField.propTypes = {
   onDelete: PropTypes.func,
   onEdit: PropTypes.func,
   ontaskCompleteStateToggle: PropTypes.func,
+  onTimerTick: PropTypes.func.isRequired,
+  workTime: PropTypes.number,
 };
 
 export default TaskField;
