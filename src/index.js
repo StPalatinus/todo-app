@@ -6,6 +6,7 @@ import TaskList from './components/task-list';
 import Footer from './components/footer';
 import './index.css';
 import filterOptions from './assets/filter-options';
+import storage from './assets/storage';
 
 const TodoApp = () => {
   const [state, setState] = React.useState({
@@ -21,14 +22,6 @@ const TodoApp = () => {
       todoRestored.created = new Date(Date.parse(todoRestored.created));
     });
     return lsRestored;
-  };
-
-  const saveTodosToStorage = (item) => {
-    localStorage.setItem('todos', JSON.stringify(item));
-  };
-
-  const saveUsedIdsArrToStorage = (adsArr) => {
-    localStorage.setItem('usedIdsArr', JSON.stringify(adsArr));
   };
 
   React.useEffect(() => {
@@ -63,8 +56,8 @@ const TodoApp = () => {
       const newArr = [...prevState.tasksData.slice(0, idx), ...prevState.tasksData.slice(idx + 1)];
       const newUsedIdsArr = [...prevState.usedIdsArr.slice(0, idInArr), ...prevState.usedIdsArr.slice(idInArr + 1)];
 
-      saveTodosToStorage(newArr);
-      saveUsedIdsArrToStorage(newUsedIdsArr);
+      storage.saveTodosToStorage(newArr);
+      storage.saveUsedIdsArrToStorage(newUsedIdsArr);
 
       return {
         ...prevState,
@@ -85,7 +78,7 @@ const TodoApp = () => {
         ...newStateChangedTask,
         ...prevState.tasksData.slice(idx + 1),
       ];
-      saveTodosToStorage(newArr);
+      storage.saveTodosToStorage(newArr);
 
       return {
         ...prevState,
@@ -104,7 +97,7 @@ const TodoApp = () => {
         ...newStateChangedTask,
         ...prevState.tasksData.slice(idx + 1),
       ];
-      saveTodosToStorage(newArr);
+      storage.saveTodosToStorage(newArr);
 
       return {
         ...prevState,
@@ -130,7 +123,7 @@ const TodoApp = () => {
       const oldIdsArr = prevState.usedIdsArr.map((id) => id);
       const newIdsArr = [...oldIdsArr, nextId];
 
-      saveUsedIdsArrToStorage(newIdsArr);
+      storage.saveUsedIdsArrToStorage(newIdsArr);
 
       const newTaskObj = {
         description: text,
@@ -141,7 +134,7 @@ const TodoApp = () => {
         workTime: 0,
       };
       const newArr = [...prevState.tasksData, newTaskObj];
-      saveTodosToStorage(newArr);
+      storage.saveTodosToStorage(newArr);
 
       return {
         ...prevState,
@@ -175,7 +168,7 @@ const TodoApp = () => {
         ...newStateChangedTask,
         ...prevState.tasksData.slice(idx + 1),
       ];
-      saveTodosToStorage(newArr);
+      storage.saveTodosToStorage(newArr);
 
       return {
         ...prevState,
@@ -210,7 +203,7 @@ const TodoApp = () => {
         ...newStateChangedTask,
         ...prevState.tasksData.slice(idx + 1),
       ];
-      saveTodosToStorage(newArr);
+      storage.saveTodosToStorage(newArr);
 
       return {
         ...prevState,
